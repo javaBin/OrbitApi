@@ -8,7 +8,6 @@ import io.ktor.server.plugins.callid.CallId
 import io.ktor.server.plugins.callid.callIdMdc
 import io.ktor.server.plugins.callloging.CallLogging
 import io.ktor.server.request.path
-import io.ktor.server.routing.routing
 import io.micrometer.prometheus.PrometheusConfig
 import io.micrometer.prometheus.PrometheusMeterRegistry
 import org.slf4j.event.Level
@@ -30,7 +29,5 @@ fun Application.configureMonitoring() {
         verify { callId: String ->
             callId.isNotEmpty()
         }
-    }
-    routing {
     }
 }
