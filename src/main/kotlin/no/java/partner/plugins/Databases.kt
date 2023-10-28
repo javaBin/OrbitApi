@@ -1,13 +1,13 @@
 package no.java.partner.plugins
 
-import io.ktor.http.*
-import io.ktor.server.application.*
-import io.ktor.server.request.*
-import io.ktor.server.response.*
-import java.sql.*
-import kotlinx.coroutines.*
+import io.ktor.server.application.Application
+import kotliquery.HikariCP
+import javax.sql.DataSource
 
-fun Application.configureDatabases() {
-    routing {
-    }
+fun Application.dataSource(): DataSource {
+    return HikariCP.default(
+        environment.config.property("postgres.url").getString(),
+        environment.config.property("postgres.user").getString(),
+        environment.config.property("postgres.password").getString(),
+    )
 }

@@ -1,15 +1,9 @@
-
-val ktor_version: String by project
-val kotlin_version: String by project
-val logback_version: String by project
-
-val postgres_version: String by project
-val h2_version: String by project
-val prometeus_version: String by project
 plugins {
-    kotlin("jvm") version "1.9.10"
-    id("io.ktor.plugin") version "2.3.5"
-    id("org.jetbrains.kotlin.plugin.serialization") version "1.9.10"
+    alias(libs.plugins.kotlin)
+    alias(libs.plugins.ktor)
+    alias(libs.plugins.kotlinter)
+    alias(libs.plugins.detekt)
+    jacoco
 }
 
 group = "no.java.partner"
@@ -22,26 +16,77 @@ application {
     applicationDefaultJvmArgs = listOf("-Dio.ktor.development=$isDevelopment")
 }
 
+java {
+    sourceCompatibility = JavaVersion.VERSION_20
+}
+
 repositories {
     mavenCentral()
 }
 
 dependencies {
-    implementation("io.ktor:ktor-server-core-jvm")
-    implementation("io.ktor:ktor-server-sessions-jvm")
-    implementation("io.ktor:ktor-server-host-common-jvm")
-    implementation("io.ktor:ktor-server-status-pages-jvm")
-    implementation("io.ktor:ktor-serialization-kotlinx-json-jvm")
-    implementation("io.ktor:ktor-server-content-negotiation-jvm")
-    implementation("org.postgresql:postgresql:$postgres_version")
-    implementation("com.h2database:h2:$h2_version")
-    implementation("io.ktor:ktor-serialization-gson-jvm")
-    implementation("io.ktor:ktor-server-metrics-micrometer-jvm")
-    implementation("io.micrometer:micrometer-registry-prometheus:$prometeus_version")
-    implementation("io.ktor:ktor-server-call-logging-jvm")
-    implementation("io.ktor:ktor-server-call-id-jvm")
-    implementation("io.ktor:ktor-server-netty-jvm")
-    implementation("ch.qos.logback:logback-classic:$logback_version")
-    testImplementation("io.ktor:ktor-server-tests-jvm")
-    testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version")
+    implementation(libs.ktor.server.call.id)
+    implementation(libs.ktor.server.call.logging)
+    implementation(libs.ktor.server.content.negotiation)
+    implementation(libs.ktor.server.core)
+    implementation(libs.ktor.server.host)
+    implementation(libs.ktor.server.metrics.micrometer)
+    implementation(libs.ktor.server.netty)
+    implementation(libs.ktor.server.status.pages)
+
+    implementation(libs.ktor.client.core)
+    implementation(libs.ktor.client.okhttp)
+    implementation(libs.ktor.client.logging)
+    implementation(libs.ktor.client.content.negotiation)
+
+    implementation(libs.ktor.jackson)
+
+    implementation(libs.kotlinx.coroutines.core)
+
+    implementation(libs.arrow.core)
+
+    implementation(libs.kotliquery)
+    implementation(libs.flyway)
+    implementation(libs.postgres)
+    implementation(libs.hikaricp)
+    implementation(libs.jackson.datatype.jsr310)
+
+    implementation(libs.logback.classic)
+    implementation(libs.kotlin.logging)
+    implementation(libs.micrometer.registry.prometheus)
+
+    testImplementation(libs.ktor.server.tests)
+    testImplementation(libs.ktor.client.mock)
+    testImplementation(libs.kotest.runner.junit5)
+    testImplementation(libs.kotest.assertions.core)
+    testImplementation(libs.kotest.framework.datatest)
+    testImplementation(libs.kotest.extensions.testcontainers)
+    testImplementation(libs.testcontainers.core)
+    testImplementation(libs.testcontainers.postgresql)
+    testImplementation(libs.mockk.jvm)
 }
+
+tasks {
+    withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
+        kotlinOptions {
+            freeCompilerArgs = listOf("-Xcontext-receivers")
+            jvmTarget = "20"
+        }
+    }
+}
+
+tasks.withType<Test>().configureEach {
+    useJUnitPlatform()
+}
+
+tasks.test {
+    finalizedBy(tasks.jacocoTestReport)
+}
+
+tasks.jacocoTestReport {
+    reports {
+        xml.required.set(true)
+    }
+    dependsOn(tasks.test)
+}
+

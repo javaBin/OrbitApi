@@ -1,0 +1,13 @@
+version: "3.9"
+
+services:
+  db:
+    image: postgres:15-alpine
+    restart: always
+    ports:
+      - "5555:5432"
+    environment:
+      POSTGRES_DB: partner
+      POSTGRES_USER: test
+      POSTGRES_PASSWORD: test
+

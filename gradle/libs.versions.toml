@@ -1,0 +1,74 @@
+[versions]
+arrow_version = "1.2.1"
+detekt_version = "1.23.1"
+flyway_version = "9.22.2"
+hikaricp_version = "5.0.1"
+jackson_datatype_jsr310_version = "2.15.2"
+kotest_testcontainers_version = "2.0.2"
+kotest_version = "5.7.2"
+kotlin_logging_version = "3.0.5"
+kotlin_version = "1.9.10"
+kotlinter_version = "3.14.0"
+kotlinx_version = "1.7.3"
+kotliquery_version = "1.9.0"
+ktor_version = "2.3.5"
+logback_version = "1.4.11"
+mockk_version = "1.13.8"
+postgres_version = "42.6.0"
+prometheus_version = "1.11.5"
+testcontainers_version = "1.19.1"
+
+[libraries]
+arrow-core = { group = "io.arrow-kt", name = "arrow-core", version.ref = "arrow_version" }
+
+flyway = { group = "org.flywaydb", name = "flyway-core", version.ref = "flyway_version" }
+
+hikaricp = { group = "com.zaxxer", name = "HikariCP", version.ref = "hikaricp_version" }
+
+jackson-datatype-jsr310 = { group = "com.fasterxml.jackson.datatype", name = "jackson-datatype-jsr310", version.ref = "jackson_datatype_jsr310_version" }
+
+kotest-assertions-core = { group = "io.kotest", name = "kotest-assertions-core", version.ref = "kotest_version" }
+kotest-extensions-testcontainers = { group = "io.kotest.extensions", name = "kotest-extensions-testcontainers", version.ref = "kotest_testcontainers_version" }
+kotest-framework-datatest = { group = "io.kotest", name = "kotest-framework-datatest", version.ref = "kotest_version" }
+kotest-runner-junit5 = { group = "io.kotest", name = "kotest-runner-junit5", version.ref = "kotest_version" }
+
+kotlin-logging = { group = "io.github.microutils", name = "kotlin-logging-jvm", version.ref = "kotlin_logging_version" }
+
+kotlinx-coroutines-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "kotlinx_version" }
+
+kotliquery = { group = "com.github.seratch", name = "kotliquery", version.ref = "kotliquery_version" }
+
+ktor-client-content-negotiation = { group = "io.ktor", name = "ktor-client-content-negotiation", version.ref = "ktor_version" }
+ktor-client-core = { group = "io.ktor", name = "ktor-client-core", version.ref = "ktor_version" }
+ktor-client-logging = { group = "io.ktor", name = "ktor-client-logging", version.ref = "ktor_version" }
+ktor-client-mock = { group = "io.ktor", name = "ktor-client-mock", version.ref = "ktor_version" }
+ktor-client-okhttp = { group = "io.ktor", name = "ktor-client-okhttp", version.ref = "ktor_version" }
+
+ktor-jackson = { group = "io.ktor", name = "ktor-serialization-jackson-jvm", version.ref = "ktor_version" }
+
+ktor-server-call-id = { group = "io.ktor", name = "ktor-server-call-id-jvm", version.ref = "ktor_version" }
+ktor-server-call-logging = { group = "io.ktor", name = "ktor-server-call-logging-jvm", version.ref = "ktor_version" }
+ktor-server-content-negotiation = { group = "io.ktor", name = "ktor-server-content-negotiation-jvm", version.ref = "ktor_version" }
+ktor-server-core = { group = "io.ktor", name = "ktor-server-core-jvm", version.ref = "ktor_version" }
+ktor-server-host = { group = "io.ktor", name = "ktor-server-host-common-jvm", version.ref = "ktor_version" }
+ktor-server-metrics-micrometer = { group = "io.ktor", name = "ktor-server-metrics-micrometer-jvm", version.ref = "ktor_version" }
+ktor-server-netty = { group = "io.ktor", name = "ktor-server-netty-jvm", version.ref = "ktor_version" }
+ktor-server-status-pages = { group = "io.ktor", name = "ktor-server-status-pages-jvm", version.ref = "ktor_version" }
+ktor-server-tests = { group = "io.ktor", name = "ktor-server-tests-jvm", version.ref = "ktor_version" }
+
+logback-classic = { group = "ch.qos.logback", name = "logback-classic", version.ref = "logback_version" }
+
+micrometer-registry-prometheus = { group = "io.micrometer", name = "micrometer-registry-prometheus", version.ref = "prometheus_version" }
+
+mockk-jvm = { group = "io.mockk", name = "mockk-jvm", version.ref = "mockk_version" }
+
+postgres = { group = "org.postgresql", name = "postgresql", version.ref = "postgres_version" }
+
+testcontainers-core = { group = "org.testcontainers", name = "testcontainers", version.ref = "testcontainers_version" }
+testcontainers-postgresql = { group = "org.testcontainers", name = "postgresql", version.ref = "testcontainers_version" }
+
+[plugins]
+kotlin = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin_version" }
+kotlinter = { id = "org.jmailen.kotlinter", version.ref = "kotlinter_version" }
+ktor = { id = "io.ktor.plugin", version.ref = "ktor_version" }
+detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt_version" }
