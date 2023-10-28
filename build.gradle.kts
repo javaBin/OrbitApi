@@ -17,7 +17,7 @@ application {
 }
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_20
+    sourceCompatibility = JavaVersion.VERSION_17
 }
 
 repositories {
@@ -70,7 +70,7 @@ tasks {
     withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
         kotlinOptions {
             freeCompilerArgs = listOf("-Xcontext-receivers")
-            jvmTarget = "20"
+            jvmTarget = "17"
         }
     }
 }
