@@ -10,13 +10,16 @@ class ContactRepository(private val session: Session) {
     companion object {
         @Language("PostgreSQL")
         val ALL_QUERY = """
-        SELECT c.id, c.name, c.email, c.telephone
+        SELECT
+          c.id AS c_id, c.name AS c_name, c.email AS c_email, c.telephone as c_tel
         FROM contact c
         """.trimIndent()
 
         @Language("PostgreSQL")
         val ALL_FULL_QUERY = """
-        SELECT c.id, c.name, c.email, c.telephone, p.id, p.domainName, p.name
+        SELECT
+          c.id AS c_id, c.name AS c_name, c.email AS c_email, c.telephone as c_tel,
+          p.id AS p_id, p.domainName AS p_domainName, p.name AS p_name
         FROM contact c, partner p WHERE c.partner_id = p.id
         """.trimIndent()
     }
@@ -33,10 +36,10 @@ class ContactRepository(private val session: Session) {
 }
 
 fun Row.toContact() = Contact(
-    id = this.long("id"),
-    name = this.stringOrNull("name"),
-    email = this.string("email"),
-    telephone = this.stringOrNull("telephone"),
-    partner = this.longOrNull("p.id")?.let { this.toPartner() },
+    id = this.long("c_id"),
+    name = this.stringOrNull("c_name"),
+    email = this.string("c_email"),
+    telephone = this.stringOrNull("c_telephone"),
+    partner = this.longOrNull("p_id")?.let { this.toPartner() },
     lists = emptyList(),
 )

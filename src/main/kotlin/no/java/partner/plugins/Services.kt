@@ -4,6 +4,7 @@ import io.ktor.server.application.Application
 import kotliquery.sessionOf
 import mu.KotlinLogging
 import no.java.partner.repository.PartnerRepository
+import no.java.partner.service.PartnerService
 import org.flywaydb.core.Flyway
 import javax.sql.DataSource
 
@@ -14,14 +15,9 @@ fun Application.configureServices(dataSource: DataSource) {
 
     val dbSession = sessionOf(dataSource, returnGeneratedKey = true)
 
-    logger.info { "Database connected using ${dbSession.connection.driverName}" }
-
     val partnerRepository = PartnerRepository(dbSession)
 
-    logger.info { "Partner count: ${partnerRepository.all().count()}" }
+    val partnerService = PartnerService(partnerRepository)
 
-    // Create repositories
-    // TODO
-    // Create services
-    // TODO
+    configurePartnerRouting(partnerService)
 }
