@@ -30,14 +30,8 @@ dependencies {
     implementation(libs.ktor.server.content.negotiation)
     implementation(libs.ktor.server.core)
     implementation(libs.ktor.server.host)
-    implementation(libs.ktor.server.metrics.micrometer)
     implementation(libs.ktor.server.netty)
     implementation(libs.ktor.server.status.pages)
-
-    implementation(libs.ktor.client.core)
-    implementation(libs.ktor.client.okhttp)
-    implementation(libs.ktor.client.logging)
-    implementation(libs.ktor.client.content.negotiation)
 
     implementation(libs.ktor.jackson)
 
@@ -53,10 +47,8 @@ dependencies {
 
     implementation(libs.logback.classic)
     implementation(libs.kotlin.logging)
-    implementation(libs.micrometer.registry.prometheus)
 
     testImplementation(libs.ktor.server.tests)
-    testImplementation(libs.ktor.client.mock)
     testImplementation(libs.kotest.runner.junit5)
     testImplementation(libs.kotest.assertions.core)
     testImplementation(libs.kotest.framework.datatest)

@@ -15,7 +15,6 @@ ktor_version = "2.3.5"
 logback_version = "1.4.11"
 mockk_version = "1.13.8"
 postgres_version = "42.6.0"
-prometheus_version = "1.11.5"
 testcontainers_version = "1.19.1"
 
 [libraries]
@@ -38,12 +37,6 @@ kotlinx-coroutines-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-cor
 
 kotliquery = { group = "com.github.seratch", name = "kotliquery", version.ref = "kotliquery_version" }
 
-ktor-client-content-negotiation = { group = "io.ktor", name = "ktor-client-content-negotiation", version.ref = "ktor_version" }
-ktor-client-core = { group = "io.ktor", name = "ktor-client-core", version.ref = "ktor_version" }
-ktor-client-logging = { group = "io.ktor", name = "ktor-client-logging", version.ref = "ktor_version" }
-ktor-client-mock = { group = "io.ktor", name = "ktor-client-mock", version.ref = "ktor_version" }
-ktor-client-okhttp = { group = "io.ktor", name = "ktor-client-okhttp", version.ref = "ktor_version" }
-
 ktor-jackson = { group = "io.ktor", name = "ktor-serialization-jackson-jvm", version.ref = "ktor_version" }
 
 ktor-server-call-id = { group = "io.ktor", name = "ktor-server-call-id-jvm", version.ref = "ktor_version" }
@@ -51,14 +44,11 @@ ktor-server-call-logging = { group = "io.ktor", name = "ktor-server-call-logging
 ktor-server-content-negotiation = { group = "io.ktor", name = "ktor-server-content-negotiation-jvm", version.ref = "ktor_version" }
 ktor-server-core = { group = "io.ktor", name = "ktor-server-core-jvm", version.ref = "ktor_version" }
 ktor-server-host = { group = "io.ktor", name = "ktor-server-host-common-jvm", version.ref = "ktor_version" }
-ktor-server-metrics-micrometer = { group = "io.ktor", name = "ktor-server-metrics-micrometer-jvm", version.ref = "ktor_version" }
 ktor-server-netty = { group = "io.ktor", name = "ktor-server-netty-jvm", version.ref = "ktor_version" }
 ktor-server-status-pages = { group = "io.ktor", name = "ktor-server-status-pages-jvm", version.ref = "ktor_version" }
 ktor-server-tests = { group = "io.ktor", name = "ktor-server-tests-jvm", version.ref = "ktor_version" }
 
 logback-classic = { group = "ch.qos.logback", name = "logback-classic", version.ref = "logback_version" }
-
-micrometer-registry-prometheus = { group = "io.micrometer", name = "micrometer-registry-prometheus", version.ref = "prometheus_version" }
 
 mockk-jvm = { group = "io.mockk", name = "mockk-jvm", version.ref = "mockk_version" }
 
