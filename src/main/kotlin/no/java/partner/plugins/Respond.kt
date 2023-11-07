@@ -9,7 +9,7 @@ import no.java.partner.InvalidPassword
 
 data class Response<T>(
     val code: HttpStatusCode,
-    val message: T
+    val message: T,
 )
 
 suspend fun ApplicationCall.apiRespond(block: suspend () -> Either<ApiError, Any>) {
@@ -29,10 +29,10 @@ fun <T : Any> Either<ApiError, T>.respond(): Response<Any> = this.fold({
 })
 
 data class InvalidPasswordResponse(
-    val validations: List<String>
+    val validations: List<String>,
 )
 data class ApiErrorResponse(
-    val message: String
+    val message: String,
 )
 
 private fun ApiError.buildResponse(body: Any): Response<Any> {

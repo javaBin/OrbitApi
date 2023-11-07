@@ -1,8 +1,8 @@
 package no.java.partner.model
 
 data class InfoList(
-    val id: Long,
+    override val id: Long,
     val name: String,
 
     val contacts: List<Contact>,
-)
+) : Identifiable
