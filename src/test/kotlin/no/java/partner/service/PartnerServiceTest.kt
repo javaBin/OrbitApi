@@ -36,6 +36,7 @@ class PartnerServiceTest : PostgresFunSpec({ session ->
             partner.contacts.size shouldBe 4
             partner.contacts.find { it.id == 1L }?.let { contact ->
                 contact.name shouldBe "Contact 1"
+                contact.source shouldBe "Source 1"
                 contact.partner?.id shouldBe partner.id
             }
         }

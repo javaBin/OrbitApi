@@ -19,7 +19,7 @@ class PartnerRepository(private val session: Session) {
         val BY_ID_QUERY = """
         SELECT
             p.id AS p_id, p.domainName AS p_domainName, p.name AS p_name,
-            c.id AS c_id, c.name AS c_name, c.email AS c_email, c.telephone as c_tel
+            c.id AS c_id, c.name AS c_name, c.email AS c_email, c.telephone as c_tel, c.source as c_source
         FROM partner p, contact c
         WHERE p.id = :id AND c.partner_id = p.id
         """.trimIndent()
@@ -57,6 +57,7 @@ fun Row.toContact() = Contact(
     name = this.stringOrNull("c_name"),
     email = this.string("c_email"),
     telephone = this.stringOrNull("c_tel"),
+    source = this.stringOrNull("c_source"),
     partner = null,
     lists = emptyList(),
 )
