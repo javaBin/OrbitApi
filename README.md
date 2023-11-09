@@ -55,13 +55,13 @@ Given the following data:
 
 and
 
-| ID | Name      | E-mail              | Telephone | Partner |
-|----|-----------|---------------------|-----------|---------|
-| 1  | Contact 1 | contact1@domain.tld | 12345678  | 1       |
-| 2  | Contact 2 | contact2@domain.tld | 22345678  | 1       |
-| 3  | Contact 3 | contact3@domain.tld | 32345678  | 1       |
-| 4  | Contact 3 | contact4@domain.tld | 42345678  | 1       |
-| 5  | Contact 3 | contact5@domain.tld | 52345678  | 2       |
+| ID | Name      | E-mail              | Telephone | Source   | Partner |
+|----|-----------|---------------------|-----------|----------|---------|
+| 1  | Contact 1 | contact1@domain.tld | 12345678  | Source 1 | 1       |
+| 2  | Contact 2 | contact2@domain.tld | 22345678  | Source 2 | 1       |
+| 3  | Contact 3 | contact3@domain.tld | 32345678  | Source 3 | 1       |
+| 4  | Contact 3 | contact4@domain.tld | 42345678  | null     | 1       |
+| 5  | Contact 3 | contact5@domain.tld | 52345678  | null     | 2       |
 
 Then:
 
@@ -104,28 +104,13 @@ Then:
       "name": "Contact 5",
       "email": "contact5@domain.tld",
       "telephone": "52345678",
-      "partner": {
-        "id": 2,
-        "name": "Partner 2",
-        "domainName": "partner.2.tld",
-        "contacts": [
-          {
-            "id": 5,
-            "name": "Contact 5",
-            "email": "contact5@domain.tld",
-            "telephone": "52345678",
-            "partner": null,
-            "lists": []
-          }
-        ]
-      },
       "lists": []
     }
   ]
 }
 ```
 
-* http://localhost:8080/partner/3
+* http://localhost:8080/partner/4
 
 404 Not found
 
@@ -135,12 +120,59 @@ Then:
 }
 ```
 
-* http://localhost:8080/partner/x
+* POST http://localhost:8080/partner/
 
-400 Bad Request
+Body:
 
 ```json
 {
-	"message": "ID Parameter missing"
+  "name": "Test Partner",
+  "domanName": "test.domain.tld"
 }
 ```
+
+Response:
+
+```json
+{
+	"id": 4,
+	"name": "Test Partner",
+	"domainName": "test.domain.tld",
+	"contacts": [
+	]
+}
+```
+
+* POST http://localhost:8080/partner/4/contact/
+
+Body:
+
+```json
+{
+  "name": "Test Contact",
+  "email": "test@test.domain.tld",
+  "source": "Test Source"
+}
+```
+
+Response:
+
+```json
+{
+  "id": 4,
+  "name": "Test Partner",
+  "domainName": "test.domain.tld",
+  "contacts": [
+    {
+      "id": 6,
+      "name": "Test Contact",
+      "email": "test@test.domain.tld",
+      "telephone": null,
+      "source": "Test Source",
+      "lists": [
+      ]
+    }
+  ]
+}
+```
+

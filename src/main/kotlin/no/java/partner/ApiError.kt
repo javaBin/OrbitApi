@@ -9,6 +9,11 @@ data object PartnerNotFound : ApiError(
     "Partner not found",
 )
 
+data object ContactNotFound : ApiError(
+    HttpStatusCode.NotFound,
+    "Contact not found",
+)
+
 data object MissingID : ApiError(
     HttpStatusCode.BadRequest,
     "ID Parameter missing",

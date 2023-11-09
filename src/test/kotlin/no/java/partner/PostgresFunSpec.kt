@@ -6,8 +6,12 @@ import io.kotest.core.spec.style.FunSpec
 import kotliquery.Session
 import kotliquery.queryOf
 import kotliquery.sessionOf
+import mu.KotlinLogging
 import org.flywaydb.core.Flyway
 import org.testcontainers.containers.PostgreSQLContainer
+import org.testcontainers.containers.output.Slf4jLogConsumer
+
+private val logger = KotlinLogging.logger {}
 
 abstract class PostgresFunSpec(body: FunSpec.(Session) -> Unit) : FunSpec({
     val ds = ds()
@@ -48,10 +52,11 @@ private fun ds(): HikariDataSource {
 }
 
 private fun db() = PostgreSQLContainer<Nothing>("postgres:15-alpine").apply {
+    setCommand("postgres", "-c", "fsync=off", "-c", "log_statement=all")
     withReuse(true)
     start()
     println("🎩 Postgres started on port $firstMappedPort")
-}
+}.also { it.followOutput(Slf4jLogConsumer(logger.underlyingLogger)) }
 
 private fun HikariDataSource.flyway() {
     Flyway.configure()

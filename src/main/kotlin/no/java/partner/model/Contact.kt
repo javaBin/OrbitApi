@@ -7,6 +7,5 @@ data class Contact(
     val telephone: String?,
     val source: String?,
 
-    val partner: Partner?,
     val lists: List<InfoList>,
 ) : Identifiable
