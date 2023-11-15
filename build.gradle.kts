@@ -41,6 +41,7 @@ dependencies {
 
     implementation(libs.kotliquery)
     implementation(libs.flyway)
+    implementation(libs.flyway.postgres)
     implementation(libs.postgres)
     implementation(libs.hikaricp)
     implementation(libs.jackson.datatype.jsr310)

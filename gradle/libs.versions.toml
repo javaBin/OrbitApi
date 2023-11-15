@@ -1,17 +1,17 @@
 [versions]
 arrow_version = "1.2.1"
-detekt_version = "1.23.1"
-flyway_version = "9.22.2"
+detekt_version = "1.23.3"
+flyway_version = "10.0.1"
 hikaricp_version = "5.0.1"
-jackson_datatype_jsr310_version = "2.15.2"
+jackson_datatype_jsr310_version = "2.15.3"
 kotest_testcontainers_version = "2.0.2"
-kotest_version = "5.7.2"
+kotest_version = "5.8.0"
 kotlin_logging_version = "3.0.5"
-kotlin_version = "1.9.10"
+kotlin_version = "1.9.20"
 kotlinter_version = "3.14.0"
 kotlinx_version = "1.7.3"
 kotliquery_version = "1.9.0"
-ktor_version = "2.3.5"
+ktor_version = "2.3.6"
 logback_version = "1.4.11"
 mockk_version = "1.13.8"
 postgres_version = "42.6.0"
@@ -21,6 +21,7 @@ testcontainers_version = "1.19.1"
 arrow-core = { group = "io.arrow-kt", name = "arrow-core", version.ref = "arrow_version" }
 
 flyway = { group = "org.flywaydb", name = "flyway-core", version.ref = "flyway_version" }
+flyway-postgres = { group = "org.flywaydb", name = "flyway-database-postgresql", version.ref = "flyway_version" }
 
 hikaricp = { group = "com.zaxxer", name = "HikariCP", version.ref = "hikaricp_version" }
 
