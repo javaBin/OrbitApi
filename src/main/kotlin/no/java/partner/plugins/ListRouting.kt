@@ -3,8 +3,10 @@ package no.java.partner.plugins
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.application.Application
 import io.ktor.server.application.call
+import io.ktor.server.request.receive
 import io.ktor.server.response.respond
 import io.ktor.server.routing.get
+import io.ktor.server.routing.post
 import io.ktor.server.routing.route
 import io.ktor.server.routing.routing
 import no.java.partner.model.web.toBasicInfoList
@@ -16,6 +18,12 @@ fun Application.configureListRouting(service: ListService) {
         route("/list") {
             get {
                 call.respond(HttpStatusCode.OK, service.allLists().map { it.toBasicInfoList() })
+            }
+
+            post {
+                call.apiRespond {
+                    service.createList(call.receive()).map { it.toBasicInfoList() }
+                }
             }
 
             route("/{id}") {

@@ -2,6 +2,7 @@ package no.java.partner.repository
 
 import kotliquery.Session
 import kotliquery.queryOf
+import no.java.partner.model.web.CreateInfoList
 import org.intellij.lang.annotations.Language
 
 class ListRepository(private val session: Session) {
@@ -22,6 +23,12 @@ class ListRepository(private val session: Session) {
             LEFT OUTER JOIN contact c ON cl.contact_id = c.id
         WHERE l.id = :id
         """.trimIndent()
+
+        @Language("PostgreSQL")
+        val CREATE_INFO_LIST = """
+        INSERT INTO list (name)
+        VALUES(:name)
+        """.trimIndent()
     }
 
     fun all() = session.run(
@@ -38,4 +45,11 @@ class ListRepository(private val session: Session) {
     }.mergeFold { p1, p2 ->
         p1.copy(unsubscribed = p1.unsubscribed + p2.unsubscribed)
     }.firstOrNull()
+
+    fun createList(list: CreateInfoList) = session.run(
+        queryOf(
+            statement = CREATE_INFO_LIST,
+            paramMap = mapOf("name" to list.name),
+        ).asUpdateAndReturnGeneratedKey,
+    )
 }

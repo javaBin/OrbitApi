@@ -259,6 +259,27 @@ Fetches a list of lists
 ]
 ```
 
+### POST http://localhost:8080/list
+
+Creates a list
+
+Body:
+
+```json
+{
+  "name": "Test List"
+}
+```
+
+Response:
+
+```json
+{
+  "id": 4,
+  "name": "Test List"
+}
+```
+
 ### http://localhost:8080/list/X
 
 Fetches a list. 

@@ -1,6 +1,7 @@
 package no.java.partner.service
 
 import arrow.core.left
+import io.kotest.matchers.longs.shouldBeGreaterThan
 import io.kotest.matchers.shouldBe
 import no.java.partner.ListNotFound
 import no.java.partner.MissingID
@@ -10,6 +11,7 @@ import no.java.partner.createListContacts
 import no.java.partner.createLists
 import no.java.partner.createPartners
 import no.java.partner.loadFixtures
+import no.java.partner.model.web.CreateInfoList
 import no.java.partner.repository.ListRepository
 
 class ListServiceTest : PostgresFunSpec({ session ->
@@ -61,5 +63,16 @@ class ListServiceTest : PostgresFunSpec({ session ->
         list.isRight() shouldBe false
 
         list shouldBe MissingID.left()
+    }
+
+    test("create list creates a list") {
+        val infoList = service.createList(CreateInfoList("Test Create List"))
+
+        infoList.isRight() shouldBe true
+
+        infoList.getOrNull()?.let {
+            it.name shouldBe "Test Create List"
+            it.id shouldBeGreaterThan 0L
+        }
     }
 })
