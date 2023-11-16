@@ -1,7 +1,6 @@
 package no.java.partner.plugins
 
 import arrow.core.right
-import com.typesafe.config.ConfigFactory
 import io.kotest.matchers.shouldBe
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
@@ -12,13 +11,13 @@ import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
 import io.ktor.http.HttpStatusCode
 import io.ktor.http.contentType
-import io.ktor.server.config.HoconApplicationConfig
 import io.ktor.server.testing.ApplicationTestBuilder
 import io.ktor.server.testing.testApplication
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.slot
 import no.java.partner.app
+import no.java.partner.env
 import no.java.partner.model.Contact
 import no.java.partner.model.InfoList
 import no.java.partner.model.Partner
@@ -161,9 +160,7 @@ class PartnerRoutingTest {
     }
 
     private fun ApplicationTestBuilder.setup(partnerService: PartnerService): HttpClient {
-        environment {
-            config = HoconApplicationConfig(ConfigFactory.parseMap(emptyMap()))
-        }
+        env()
 
         app {
             configurePartnerRouting(partnerService)

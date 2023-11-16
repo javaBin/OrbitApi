@@ -41,7 +41,7 @@ fun Application.configureListRouting(service: ListService) {
                                 service.createSubscription(
                                     listId = call.parameters["id"]?.toLong(),
                                     contactId = call.parameters["contact"]?.toLong(),
-                                )
+                                ).map { it.toInfoListWithContacts() }
                             }
                         }
 
@@ -51,7 +51,7 @@ fun Application.configureListRouting(service: ListService) {
                                     listId = call.parameters["id"]?.toLong(),
                                     contactId = call.parameters["contact"]?.toLong(),
                                     subscription = true,
-                                )
+                                ).map { it.toInfoListWithContacts() }
                             }
                         }
 
@@ -61,7 +61,7 @@ fun Application.configureListRouting(service: ListService) {
                                     listId = call.parameters["id"]?.toLong(),
                                     contactId = call.parameters["contact"]?.toLong(),
                                     subscription = false,
-                                )
+                                ).map { it.toInfoListWithContacts() }
                             }
                         }
                     }

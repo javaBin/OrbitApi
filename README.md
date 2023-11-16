@@ -378,16 +378,14 @@ e.g. X=2 and Y=2 (list 2 has contact 1 already)
             "name": "Contact 2",
             "email": "contact2@domain.tld",
             "telephone": "22345678",
-            "source": "Source 2",
-            "lists": []
+            "source": "Source 2"
         },
         {
             "id": 1,
             "name": "Contact 1",
             "email": "contact1@domain.tld",
             "telephone": "12345678",
-            "source": "Source 1",
-            "lists": []
+            "source": "Source 1"
         }
     ],
     "unsubscribed": []
@@ -408,8 +406,7 @@ e.g. X=3 and Y=1
             "name": "Contact 1",
             "email": "contact1@domain.tld",
             "telephone": "12345678",
-            "source": "Source 1",
-            "lists": []
+            "source": "Source 1"
         }
     ],
     "unsubscribed": []
@@ -430,8 +427,7 @@ e.g. X=1 and Y=3
             "name": "Contact 1",
             "email": "contact1@domain.tld",
             "telephone": "12345678",
-            "source": "Source 1",
-            "lists": []
+            "source": "Source 1"
         }
     ],
     "unsubscribed": [
@@ -440,8 +436,7 @@ e.g. X=1 and Y=3
             "name": "Contact 3",
             "email": "contact3@domain.tld",
             "telephone": "32345678",
-            "source": "Source 3",
-            "lists": []
+            "source": "Source 3"
         }
     ]
 }
