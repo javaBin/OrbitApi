@@ -57,6 +57,7 @@ dependencies {
     testImplementation(libs.testcontainers.core)
     testImplementation(libs.testcontainers.postgresql)
     testImplementation(libs.mockk.jvm)
+    testImplementation(libs.ktor.client.content.negotiation)
 }
 
 tasks {
