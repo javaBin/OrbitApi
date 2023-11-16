@@ -43,6 +43,29 @@ To use this db - pass the following environment variable:
 
 `DB_URL=jdbc:postgresql://localhost:5555/partner`
 
+## API
+
+```
+/partner
+  - GET - list partners
+  - POST- create partner
+/partner/{PID}
+  - GET - partner with contacts
+/partner/{PID}/contact
+  - POST - create contact
+/list
+  - GET - list mailing lists
+  - POST - create mailing list
+/list/{LID}
+  - GET - get mailing list with contacts
+/list/{LID}/contact/{CID}
+  - POST - subscribe contact to a list (create the assocication - sets subscribe true)
+/list/{LID}/contact/{CID}/subscribe
+  - PATCH - set subscribe flag true on a subscription
+/list/{LID}/contact/{CID}/unsubscribe
+  - PATCH - set subscribe false true on a subscription   
+```
+
 ## Examples
 
 Given the following data:
