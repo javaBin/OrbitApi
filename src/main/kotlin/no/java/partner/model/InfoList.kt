@@ -5,4 +5,5 @@ data class InfoList(
     val name: String,
 
     val contacts: List<Contact>,
+    val unsubscribed: List<Contact>,
 ) : Identifiable

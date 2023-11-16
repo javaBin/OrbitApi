@@ -83,7 +83,9 @@ Given the following data:
 
 Then:
 
-* http://localhost:8080/partner/
+### http://localhost:8080/partner
+
+Fetches list of partners - does not populate contacts
 
 ```json
 [
@@ -108,27 +110,75 @@ Then:
 ]
 ```
 
+### http://localhost:8080/partner/X
 
-* http://localhost:8080/partner/2
+Fetches partner, populates contacts and also contacts subscribed lists (basic info only - ID and name)
+
+e.g X=1
 
 ```json
 {
-  "id": 2,
-  "name": "Partner 2",
-  "domainName": "partner.2.tld",
+  "id": 1,
+  "name": "Partner 1",
+  "domainName": "partner.1.tld",
   "contacts": [
     {
-      "id": 5,
-      "name": "Contact 5",
-      "email": "contact5@domain.tld",
-      "telephone": "52345678",
+      "id": 4,
+      "name": "Contact 4",
+      "email": "contact4@domain.tld",
+      "telephone": "42345678",
+      "source": null,
       "lists": []
+    },
+    {
+      "id": 2,
+      "name": "Contact 2",
+      "email": "contact2@domain.tld",
+      "telephone": "22345678",
+      "source": "Source 2",
+      "lists": []
+    },
+    {
+      "id": 3,
+      "name": "Contact 3",
+      "email": "contact3@domain.tld",
+      "telephone": "32345678",
+      "source": "Source 3",
+      "lists": [
+        {
+          "id": 1,
+          "name": "List 1",
+          "contacts": [],
+          "unsubscribed": []
+        }
+      ]
+    },
+    {
+      "id": 1,
+      "name": "Contact 1",
+      "email": "contact1@domain.tld",
+      "telephone": "12345678",
+      "source": "Source 1",
+      "lists": [
+        {
+          "id": 1,
+          "name": "List 1",
+          "contacts": [],
+          "unsubscribed": []
+        },
+        {
+          "id": 2,
+          "name": "List 2",
+          "contacts": [],
+          "unsubscribed": []
+        }
+      ]
     }
   ]
 }
 ```
 
-* http://localhost:8080/partner/4
+#### If partner not found:
 
 404 Not found
 
@@ -138,14 +188,16 @@ Then:
 }
 ```
 
-* POST http://localhost:8080/partner/
+###POST http://localhost:8080/partner
+
+Creates a partner
 
 Body:
 
 ```json
 {
   "name": "Test Partner",
-  "domanName": "test.domain.tld"
+  "domainName": "test.domain.tld"
 }
 ```
 
@@ -161,7 +213,11 @@ Response:
 }
 ```
 
-* POST http://localhost:8080/partner/4/contact/
+### POST http://localhost:8080/partner/X/contact/
+
+Creates a contact for a partner - returns the updated partner
+
+e.g. X=4
 
 Body:
 
@@ -194,33 +250,38 @@ Response:
 }
 ```
 
-* http://localhost:8080/list/ 
+### `http://localhost:8080/list`
 
-Response:
+Fetches a list of lists. Does not populate subscribed contacts or unsubscribed contacts.
 
 ```json
 [
-    {
-        "id": 1,
-        "name": "List 1",
-        "contacts": []
-    },
-    {
-        "id": 2,
-        "name": "List 2",
-        "contacts": []
-    },
-    {
-        "id": 3,
-        "name": "List 3",
-        "contacts": []
-    }
+  {
+    "id": 1,
+    "name": "List 1",
+    "contacts": [],
+    "unsubscribed": []
+  },
+  {
+    "id": 2,
+    "name": "List 2",
+    "contacts": [],
+    "unsubscribed": []
+  },
+  {
+    "id": 3,
+    "name": "List 3",
+    "contacts": [],
+    "unsubscribed": []
+  }
 ]
 ```
 
-* http://localhost:8080/list/1
+### http://localhost:8080/list/X
 
-Response:
+Fetches a list. Populates subscribed/unsubscribed with basic contact info
+
+e.g X=1
 
 ```json
 {
@@ -243,8 +304,37 @@ Response:
       "source": "Source 1",
       "lists": []
     }
-  ]
+  ],
+  "unsubscribed": []
 }
 ```
 
+e.g. X=3
 
+```json
+{
+    "id": 3,
+    "name": "List 3",
+    "contacts": [],
+    "unsubscribed": [
+        {
+            "id": 1,
+            "name": "Contact 1",
+            "email": "contact1@domain.tld",
+            "telephone": "12345678",
+            "source": "Source 1",
+            "lists": []
+        }
+    ]
+}
+```
+
+#### If list not found:
+
+404 Not found
+
+```json
+{
+  "message": "List not found"
+}
+```
