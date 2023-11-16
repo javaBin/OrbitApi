@@ -9,11 +9,8 @@ import io.ktor.server.routing.get
 import io.ktor.server.routing.post
 import io.ktor.server.routing.route
 import io.ktor.server.routing.routing
-import mu.KotlinLogging
 import no.java.partner.model.web.CreateContact
 import no.java.partner.service.PartnerService
-
-private val logger = KotlinLogging.logger {}
 
 fun Application.configurePartnerRouting(service: PartnerService) {
     routing {

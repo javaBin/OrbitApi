@@ -47,13 +47,15 @@ To use this db - pass the following environment variable:
 
 Given the following data:
 
+### Partner
+
 | ID | Domain        | Name      |
 |----|---------------|-----------|
 | 1  | partner.1.tld | Partner 1 |
 | 2  | partner.2.tld | Partner 2 |
 | 3  | partner.3.tld | Partner 3 |
 
-and
+### Contact
 
 | ID | Name      | E-mail              | Telephone | Source   | Partner |
 |----|-----------|---------------------|-----------|----------|---------|
@@ -62,6 +64,22 @@ and
 | 3  | Contact 3 | contact3@domain.tld | 32345678  | Source 3 | 1       |
 | 4  | Contact 3 | contact4@domain.tld | 42345678  | null     | 1       |
 | 5  | Contact 3 | contact5@domain.tld | 52345678  | null     | 2       |
+
+### List
+
+| ID | Name   |
+|----|--------|
+| 1  | List 1 |
+| 2  | List 2 |
+
+### Contact List
+
+| Contact Id | List Id | Subscribed |
+|------------|---------|------------|
+| 1          | 1       | true       | 
+| 1          | 2       | true       |
+| 1          | 3       | false      |
+| 3          | 1       | true       |
 
 Then:
 
@@ -175,4 +193,58 @@ Response:
   ]
 }
 ```
+
+* http://localhost:8080/list/ 
+
+Response:
+
+```json
+[
+    {
+        "id": 1,
+        "name": "List 1",
+        "contacts": []
+    },
+    {
+        "id": 2,
+        "name": "List 2",
+        "contacts": []
+    },
+    {
+        "id": 3,
+        "name": "List 3",
+        "contacts": []
+    }
+]
+```
+
+* http://localhost:8080/list/1
+
+Response:
+
+```json
+{
+  "id": 1,
+  "name": "List 1",
+  "contacts": [
+    {
+      "id": 3,
+      "name": "Contact 3",
+      "email": "contact3@domain.tld",
+      "telephone": "32345678",
+      "source": "Source 3",
+      "lists": []
+    },
+    {
+      "id": 1,
+      "name": "Contact 1",
+      "email": "contact1@domain.tld",
+      "telephone": "12345678",
+      "source": "Source 1",
+      "lists": []
+    }
+  ]
+}
+```
+
 
