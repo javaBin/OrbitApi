@@ -85,34 +85,31 @@ Then:
 
 ### http://localhost:8080/partner
 
-Fetches list of partners - does not populate contacts
+Fetches list of partners
 
 ```json
 [
   {
     "id": 1,
     "name": "Partner 1",
-    "domainName": "partner.1.tld",
-    "contacts": []
+    "domainName": "partner.1.tld"
   },
   {
     "id": 2,
     "name": "Partner 2",
-    "domainName": "partner.2.tld",
-    "contacts": []
+    "domainName": "partner.2.tld"
   },
   {
     "id": 3,
     "name": "Partner 3",
-    "domainName": "partner.3.tld",
-    "contacts": []
+    "domainName": "partner.3.tld"
   }
 ]
 ```
 
 ### http://localhost:8080/partner/X
 
-Fetches partner, populates contacts and also contacts subscribed lists (basic info only - ID and name)
+Fetches partner with basic contact info and for each contact basic list info for subscribed lists
 
 e.g X=1
 
@@ -147,9 +144,7 @@ e.g X=1
       "lists": [
         {
           "id": 1,
-          "name": "List 1",
-          "contacts": [],
-          "unsubscribed": []
+          "name": "List 1"
         }
       ]
     },
@@ -162,15 +157,11 @@ e.g X=1
       "lists": [
         {
           "id": 1,
-          "name": "List 1",
-          "contacts": [],
-          "unsubscribed": []
+          "name": "List 1"
         },
         {
           "id": 2,
-          "name": "List 2",
-          "contacts": [],
-          "unsubscribed": []
+          "name": "List 2"
         }
       ]
     }
@@ -188,7 +179,7 @@ e.g X=1
 }
 ```
 
-###POST http://localhost:8080/partner
+### POST http://localhost:8080/partner
 
 Creates a partner
 
@@ -205,11 +196,9 @@ Response:
 
 ```json
 {
-	"id": 4,
-	"name": "Test Partner",
-	"domainName": "test.domain.tld",
-	"contacts": [
-	]
+  "id": 4,
+  "name": "Test Partner",
+  "domainName": "test.domain.tld"
 }
 ```
 
@@ -243,8 +232,7 @@ Response:
       "email": "test@test.domain.tld",
       "telephone": null,
       "source": "Test Source",
-      "lists": [
-      ]
+      "lists": []
     }
   ]
 }
@@ -252,34 +240,28 @@ Response:
 
 ### `http://localhost:8080/list`
 
-Fetches a list of lists. Does not populate subscribed contacts or unsubscribed contacts.
+Fetches a list of lists
 
 ```json
 [
   {
     "id": 1,
-    "name": "List 1",
-    "contacts": [],
-    "unsubscribed": []
+    "name": "List 1"
   },
   {
     "id": 2,
-    "name": "List 2",
-    "contacts": [],
-    "unsubscribed": []
+    "name": "List 2"
   },
   {
     "id": 3,
-    "name": "List 3",
-    "contacts": [],
-    "unsubscribed": []
+    "name": "List 3"
   }
 ]
 ```
 
 ### http://localhost:8080/list/X
 
-Fetches a list. Populates subscribed/unsubscribed with basic contact info
+Fetches a list. 
 
 e.g X=1
 
@@ -293,16 +275,14 @@ e.g X=1
       "name": "Contact 3",
       "email": "contact3@domain.tld",
       "telephone": "32345678",
-      "source": "Source 3",
-      "lists": []
+      "source": "Source 3"
     },
     {
       "id": 1,
       "name": "Contact 1",
       "email": "contact1@domain.tld",
       "telephone": "12345678",
-      "source": "Source 1",
-      "lists": []
+      "source": "Source 1"
     }
   ],
   "unsubscribed": []
@@ -313,19 +293,18 @@ e.g. X=3
 
 ```json
 {
-    "id": 3,
-    "name": "List 3",
-    "contacts": [],
-    "unsubscribed": [
-        {
-            "id": 1,
-            "name": "Contact 1",
-            "email": "contact1@domain.tld",
-            "telephone": "12345678",
-            "source": "Source 1",
-            "lists": []
-        }
-    ]
+  "id": 3,
+  "name": "List 3",
+  "contacts": [],
+  "unsubscribed": [
+    {
+      "id": 1,
+      "name": "Contact 1",
+      "email": "contact1@domain.tld",
+      "telephone": "12345678",
+      "source": "Source 1"
+    }
+  ]
 }
 ```
 
