@@ -338,3 +338,88 @@ e.g. X=3
   "message": "List not found"
 }
 ```
+
+### POST http://localhost:8080/list/X/contact/Y
+
+Subscribes a contact to a list
+
+e.g. X=2 and Y=2 (list 2 has contact 1 already)
+
+```json
+{
+    "id": 2,
+    "name": "List 2",
+    "contacts": [
+        {
+            "id": 2,
+            "name": "Contact 2",
+            "email": "contact2@domain.tld",
+            "telephone": "22345678",
+            "source": "Source 2",
+            "lists": []
+        },
+        {
+            "id": 1,
+            "name": "Contact 1",
+            "email": "contact1@domain.tld",
+            "telephone": "12345678",
+            "source": "Source 1",
+            "lists": []
+        }
+    ],
+    "unsubscribed": []
+}
+```
+
+### PATCH http://localhost:8080/list/X/contact/Y/subscribe
+
+e.g. X=3 and Y=1
+
+```json
+{
+    "id": 3,
+    "name": "List 3",
+    "contacts": [
+        {
+            "id": 1,
+            "name": "Contact 1",
+            "email": "contact1@domain.tld",
+            "telephone": "12345678",
+            "source": "Source 1",
+            "lists": []
+        }
+    ],
+    "unsubscribed": []
+}
+```
+
+### PATCH http://localhost:8080/list/X/contact/Y/unsubscribe
+
+e.g. X=1 and Y=3
+
+```json
+{
+    "id": 1,
+    "name": "List 1",
+    "contacts": [
+        {
+            "id": 1,
+            "name": "Contact 1",
+            "email": "contact1@domain.tld",
+            "telephone": "12345678",
+            "source": "Source 1",
+            "lists": []
+        }
+    ],
+    "unsubscribed": [
+        {
+            "id": 3,
+            "name": "Contact 3",
+            "email": "contact3@domain.tld",
+            "telephone": "32345678",
+            "source": "Source 3",
+            "lists": []
+        }
+    ]
+}
+```

@@ -6,6 +6,7 @@ import io.ktor.server.application.call
 import io.ktor.server.request.receive
 import io.ktor.server.response.respond
 import io.ktor.server.routing.get
+import io.ktor.server.routing.patch
 import io.ktor.server.routing.post
 import io.ktor.server.routing.route
 import io.ktor.server.routing.routing
@@ -30,6 +31,39 @@ fun Application.configureListRouting(service: ListService) {
                 get {
                     call.apiRespond {
                         service.listById(call.parameters["id"]?.toLong()).map { it.toInfoListWithContacts() }
+                    }
+                }
+
+                route("/contact") {
+                    route("/{contact}") {
+                        post {
+                            call.apiRespond {
+                                service.createSubscription(
+                                    listId = call.parameters["id"]?.toLong(),
+                                    contactId = call.parameters["contact"]?.toLong(),
+                                )
+                            }
+                        }
+
+                        patch("/subscribe") {
+                            call.apiRespond {
+                                service.updateSubscription(
+                                    listId = call.parameters["id"]?.toLong(),
+                                    contactId = call.parameters["contact"]?.toLong(),
+                                    subscription = true,
+                                )
+                            }
+                        }
+
+                        patch("/unsubscribe") {
+                            call.apiRespond {
+                                service.updateSubscription(
+                                    listId = call.parameters["id"]?.toLong(),
+                                    contactId = call.parameters["contact"]?.toLong(),
+                                    subscription = false,
+                                )
+                            }
+                        }
                     }
                 }
             }

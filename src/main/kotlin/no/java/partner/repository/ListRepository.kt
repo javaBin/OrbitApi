@@ -29,6 +29,17 @@ class ListRepository(private val session: Session) {
         INSERT INTO list (name)
         VALUES(:name)
         """.trimIndent()
+
+        @Language("PostgreSQL")
+        val CREATE_SUBSCRIPTION = """
+        INSERT INTO contact_list (contact_id, list_id, subscribed)
+        VALUES(:contactId, :listId, true)
+        """.trimIndent()
+
+        @Language("PostgreSQL")
+        val UPDATE_SUBSCRIPTION = """
+        UPDATE contact_list SET subscribed = :subscribe WHERE contact_id = :contactId AND list_id = :listId
+        """.trimIndent()
     }
 
     fun all() = session.run(
@@ -51,5 +62,19 @@ class ListRepository(private val session: Session) {
             statement = CREATE_INFO_LIST,
             paramMap = mapOf("name" to list.name),
         ).asUpdateAndReturnGeneratedKey,
+    )
+
+    fun createSubscription(listId: Long, contactId: Long) = session.run(
+        queryOf(
+            statement = CREATE_SUBSCRIPTION,
+            paramMap = mapOf("listId" to listId, "contactId" to contactId),
+        ).asUpdate,
+    )
+
+    fun updateSubscription(listId: Long, contactId: Long, subscribe: Boolean) = session.run(
+        queryOf(
+            statement = UPDATE_SUBSCRIPTION,
+            paramMap = mapOf("listId" to listId, "contactId" to contactId, "subscribe" to subscribe),
+        ).asUpdate,
     )
 }

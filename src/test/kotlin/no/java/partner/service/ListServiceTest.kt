@@ -75,4 +75,42 @@ class ListServiceTest : PostgresFunSpec({ session ->
             it.id shouldBeGreaterThan 0L
         }
     }
+
+    test("create subscription creates a subscription") {
+        session.loadFixtures(listOf(createPartners, createContacts, createLists))
+
+        val infoList = service.createSubscription(1L, 1L)
+
+        infoList.isRight() shouldBe true
+
+        infoList.getOrNull()?.let {
+            it.contacts.any { contact -> contact.id == 1L } shouldBe true
+        }
+    }
+
+    test("update subscription updates a subscription for unsubscribe") {
+        session.loadFixtures(listOf(createPartners, createContacts, createLists, createListContacts))
+
+        val infoList = service.updateSubscription(1L, 1L, false)
+
+        infoList.isRight() shouldBe true
+
+        infoList.getOrNull()?.let {
+            it.unsubscribed.any { contact -> contact.id == 1L } shouldBe true
+            it.contacts.none { contact -> contact.id == 1L } shouldBe true
+        }
+    }
+
+    test("update subscription updates a subscription for subscribe") {
+        session.loadFixtures(listOf(createPartners, createContacts, createLists, createListContacts))
+
+        val infoList = service.updateSubscription(3L, 1L, true)
+
+        infoList.isRight() shouldBe true
+
+        infoList.getOrNull()?.let {
+            it.contacts.any { contact -> contact.id == 1L } shouldBe true
+            it.unsubscribed.none { contact -> contact.id == 1L } shouldBe true
+        }
+    }
 })
