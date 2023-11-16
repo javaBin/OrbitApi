@@ -7,8 +7,11 @@ import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.accept
 import io.ktor.client.request.get
+import io.ktor.client.request.post
+import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
 import io.ktor.http.HttpStatusCode
+import io.ktor.http.contentType
 import io.ktor.server.config.HoconApplicationConfig
 import io.ktor.server.testing.ApplicationTestBuilder
 import io.ktor.server.testing.testApplication
@@ -20,19 +23,20 @@ import no.java.partner.model.Contact
 import no.java.partner.model.InfoList
 import no.java.partner.model.Partner
 import no.java.partner.model.web.BasicPartner
+import no.java.partner.model.web.CreateContact
+import no.java.partner.model.web.CreatePartner
 import no.java.partner.model.web.PartnerWithContacts
 import no.java.partner.service.PartnerService
 import no.java.partner.testClient
 import org.junit.jupiter.api.Test
 
 class PartnerRoutingTest {
+
     @Test
     fun `GET partner returns partner list`() {
         val partnerService = mockk<PartnerService>()
 
-        every { partnerService.allPartners() } returns listOf(
-            Partner(id = 1, name = "Test Partner 1", domainName = "test.domain.tld", contacts = emptyList()),
-        )
+        every { partnerService.allPartners() } returns listOf(testPartner)
 
         testApplication {
             val client = setup(partnerService)
@@ -58,30 +62,9 @@ class PartnerRoutingTest {
     fun `GET partner 1 returns partner`() {
         val partnerService = mockk<PartnerService>()
 
-        val slot = slot<Long>()
+        val idSlot = slot<Long>()
 
-        every { partnerService.partnerById(capture(slot)) } returns Partner(
-            id = 1,
-            name = "Test Partner 1",
-            domainName = "test.domain.tld",
-            contacts = listOf(
-                Contact(
-                    id = 1L,
-                    name = "Test Contact 1",
-                    email = "test@domain.tld",
-                    telephone = "Test Telephone",
-                    source = "Test Source",
-                    lists = listOf(
-                        InfoList(
-                            id = 1L,
-                            name = "Test List 1",
-                            contacts = emptyList(),
-                            unsubscribed = emptyList(),
-                        ),
-                    ),
-                ),
-            ),
-        ).right()
+        every { partnerService.partnerById(capture(idSlot)) } returns testPartner.right()
 
         testApplication {
             val client = setup(partnerService)
@@ -92,7 +75,7 @@ class PartnerRoutingTest {
 
             response.status shouldBe HttpStatusCode.OK
 
-            slot.captured shouldBe 1L
+            idSlot.captured shouldBe 1L
 
             val partner = response.body<PartnerWithContacts>()
 
@@ -117,6 +100,66 @@ class PartnerRoutingTest {
         }
     }
 
+    @Test
+    fun `POST partner creates partner`() {
+        val partnerService = mockk<PartnerService>()
+
+        val partnerSlot = slot<CreatePartner>()
+
+        every { partnerService.createPartner(capture(partnerSlot)) } returns testPartner.right()
+
+        testApplication {
+            val client = setup(partnerService)
+
+            val response = client.post("/partner") {
+                contentType(ContentType.Application.Json)
+                accept(ContentType.Application.Json)
+                setBody(testCreatePartner)
+            }
+
+            response.status shouldBe HttpStatusCode.OK
+
+            partnerSlot.captured shouldBe testCreatePartner
+
+            val partner = response.body<BasicPartner>()
+
+            partner.id shouldBe 1L
+            partner.name shouldBe "Test Partner 1"
+            partner.domainName shouldBe "test.domain.tld"
+        }
+    }
+
+    @Test
+    fun `POST contact creates contact`() {
+        val partnerService = mockk<PartnerService>()
+
+        val idSlot = slot<Long>()
+        val contactSlot = slot<CreateContact>()
+
+        every { partnerService.createContact(capture(idSlot), capture(contactSlot)) } returns testPartner.right()
+
+        testApplication {
+            val client = setup(partnerService)
+
+            val response = client.post("/partner/1/contact") {
+                contentType(ContentType.Application.Json)
+                accept(ContentType.Application.Json)
+                setBody(testCreateContact)
+            }
+
+            response.status shouldBe HttpStatusCode.OK
+
+            idSlot.captured shouldBe 1L
+            contactSlot.captured shouldBe testCreateContact
+
+            val partner = response.body<PartnerWithContacts>()
+
+            partner.id shouldBe 1L
+            partner.name shouldBe "Test Partner 1"
+            partner.domainName shouldBe "test.domain.tld"
+        }
+    }
+
     private fun ApplicationTestBuilder.setup(partnerService: PartnerService): HttpClient {
         environment {
             config = HoconApplicationConfig(ConfigFactory.parseMap(emptyMap()))
@@ -127,5 +170,39 @@ class PartnerRoutingTest {
         }
 
         return testClient()
+    }
+
+    companion object {
+        val testCreatePartner = CreatePartner(name = "Test Partner", domainName = "Test Domain Name")
+
+        val testCreateContact = CreateContact(
+            name = "Test Contact",
+            email = "test@domain.tld",
+            telephone = "Test Telephone",
+            source = "Test Source",
+        )
+
+        val testPartner = Partner(
+            id = 1,
+            name = "Test Partner 1",
+            domainName = "test.domain.tld",
+            contacts = listOf(
+                Contact(
+                    id = 1L,
+                    name = "Test Contact 1",
+                    email = "test@domain.tld",
+                    telephone = "Test Telephone",
+                    source = "Test Source",
+                    lists = listOf(
+                        InfoList(
+                            id = 1L,
+                            name = "Test List 1",
+                            contacts = emptyList(),
+                            unsubscribed = emptyList(),
+                        ),
+                    ),
+                ),
+            ),
+        )
     }
 }
