@@ -58,6 +58,7 @@ dependencies {
     implementation(libs.ktor.client.core)
     implementation(libs.ktor.client.logging)
     implementation(libs.ktor.client.okhttp)
+    implementation("com.sendgrid:sendgrid-java:4.10.0")
 
     testImplementation(libs.ktor.server.tests)
     testImplementation(libs.kotest.runner.junit5)
