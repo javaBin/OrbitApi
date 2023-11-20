@@ -18,9 +18,8 @@ object PartnerMailSender {
         val sendMail:SendMail = sendgridkey?.let { SendGridSendMail(it) }?:DummySendMail()
 
         val content = File(args[0]).readText()
-        //val mailList:List<String> = PartnerImporter.readAllEmails(args[1])
+        val mailList:List<String> = PartnerImporter.readAllEmails(args[1])
 
-        val mailList = listOf("per.bergsjo.andresen@accenture.com","n.thesen.laeskogen@accenture.com")
 
         println("Send got ${mailList.size}")
 

@@ -69,6 +69,9 @@ dependencies {
     testImplementation(libs.testcontainers.postgresql)
     testImplementation(libs.mockk.jvm)
     testImplementation(libs.ktor.client.mock)
+    testImplementation(libs.ktor.client.content.negotiation)
+    testImplementation("org.jsonbuddy:jsonbuddy:0.18.1")
+
 }
 
 tasks {
