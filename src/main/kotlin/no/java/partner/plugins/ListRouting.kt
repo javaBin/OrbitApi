@@ -16,52 +16,54 @@ import no.java.partner.service.ListService
 
 fun Application.configureListRouting(service: ListService) {
     routing {
-        route("/list") {
-            get {
-                call.respond(HttpStatusCode.OK, service.allLists().map { it.toBasicInfoList() })
-            }
-
-            post {
-                call.apiRespond {
-                    service.createList(call.receive()).map { it.toBasicInfoList() }
-                }
-            }
-
-            route("/{id}") {
+        route("/api") {
+            route("/list") {
                 get {
+                    call.respond(HttpStatusCode.OK, service.allLists().map { it.toBasicInfoList() })
+                }
+
+                post {
                     call.apiRespond {
-                        service.listById(call.parameters["id"]?.toLong()).map { it.toInfoListWithContacts() }
+                        service.createList(call.receive()).map { it.toBasicInfoList() }
                     }
                 }
 
-                route("/contact") {
-                    route("/{contact}") {
-                        post {
-                            call.apiRespond {
-                                service.createSubscription(
-                                    listId = call.parameters["id"]?.toLong(),
-                                    contactId = call.parameters["contact"]?.toLong(),
-                                ).map { it.toInfoListWithContacts() }
-                            }
+                route("/{id}") {
+                    get {
+                        call.apiRespond {
+                            service.listById(call.parameters["id"]?.toLong()).map { it.toInfoListWithContacts() }
                         }
+                    }
 
-                        patch("/subscribe") {
-                            call.apiRespond {
-                                service.updateSubscription(
-                                    listId = call.parameters["id"]?.toLong(),
-                                    contactId = call.parameters["contact"]?.toLong(),
-                                    subscription = true,
-                                ).map { it.toInfoListWithContacts() }
+                    route("/contact") {
+                        route("/{contact}") {
+                            post {
+                                call.apiRespond {
+                                    service.createSubscription(
+                                        listId = call.parameters["id"]?.toLong(),
+                                        contactId = call.parameters["contact"]?.toLong(),
+                                    ).map { it.toInfoListWithContacts() }
+                                }
                             }
-                        }
 
-                        patch("/unsubscribe") {
-                            call.apiRespond {
-                                service.updateSubscription(
-                                    listId = call.parameters["id"]?.toLong(),
-                                    contactId = call.parameters["contact"]?.toLong(),
-                                    subscription = false,
-                                ).map { it.toInfoListWithContacts() }
+                            patch("/subscribe") {
+                                call.apiRespond {
+                                    service.updateSubscription(
+                                        listId = call.parameters["id"]?.toLong(),
+                                        contactId = call.parameters["contact"]?.toLong(),
+                                        subscription = true,
+                                    ).map { it.toInfoListWithContacts() }
+                                }
+                            }
+
+                            patch("/unsubscribe") {
+                                call.apiRespond {
+                                    service.updateSubscription(
+                                        listId = call.parameters["id"]?.toLong(),
+                                        contactId = call.parameters["contact"]?.toLong(),
+                                        subscription = false,
+                                    ).map { it.toInfoListWithContacts() }
+                                }
                             }
                         }
                     }

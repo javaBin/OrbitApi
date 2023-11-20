@@ -16,28 +16,30 @@ import no.java.partner.service.PartnerService
 
 fun Application.configurePartnerRouting(service: PartnerService) {
     routing {
-        route("/partner") {
-            get {
-                call.respond(HttpStatusCode.OK, service.allPartners().map { it.toBasicPartner() })
-            }
-
-            post {
-                call.apiRespond {
-                    service.createPartner(call.receive()).map { it.toBasicPartner() }
-                }
-            }
-
-            route("/{id}") {
+        route("/api") {
+            route("/partner") {
                 get {
+                    call.respond(HttpStatusCode.OK, service.allPartners().map { it.toBasicPartner() })
+                }
+
+                post {
                     call.apiRespond {
-                        service.partnerById(call.parameters["id"]?.toLong()).map { it.toPartnerWithContacts() }
+                        service.createPartner(call.receive()).map { it.toBasicPartner() }
                     }
                 }
 
-                post("/contact") {
-                    call.apiRespond {
-                        service.createContact(call.parameters["id"]?.toLong(), call.receive<CreateContact>())
-                            .map { it.toPartnerWithContacts() }
+                route("/{id}") {
+                    get {
+                        call.apiRespond {
+                            service.partnerById(call.parameters["id"]?.toLong()).map { it.toPartnerWithContacts() }
+                        }
+                    }
+
+                    post("/contact") {
+                        call.apiRespond {
+                            service.createContact(call.parameters["id"]?.toLong(), call.receive<CreateContact>())
+                                .map { it.toPartnerWithContacts() }
+                        }
                     }
                 }
             }
