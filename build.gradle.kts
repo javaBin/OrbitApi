@@ -32,6 +32,7 @@ dependencies {
     implementation(libs.ktor.server.host)
     implementation(libs.ktor.server.netty)
     implementation(libs.ktor.server.status.pages)
+    implementation(libs.ktor.server.cors)
 
     implementation(libs.ktor.jackson)
 
