@@ -20,11 +20,13 @@ import no.java.partner.app
 import no.java.partner.env
 import no.java.partner.model.Contact
 import no.java.partner.model.InfoList
+import no.java.partner.model.NewPartner
 import no.java.partner.model.Partner
 import no.java.partner.model.web.BasicPartner
 import no.java.partner.model.web.CreateContact
 import no.java.partner.model.web.CreatePartner
 import no.java.partner.model.web.PartnerWithContacts
+import no.java.partner.model.web.toNewPartner
 import no.java.partner.service.PartnerService
 import no.java.partner.testClient
 import org.junit.jupiter.api.Test
@@ -52,7 +54,7 @@ class PartnerRoutingTest {
             partners.first().let {
                 it.id shouldBe 1L
                 it.name shouldBe "Test Partner 1"
-                it.domainName shouldBe "test.domain.tld"
+                it.domainName shouldBe listOf("test.domain.tld")
             }
         }
     }
@@ -80,7 +82,7 @@ class PartnerRoutingTest {
 
             partner.id shouldBe 1L
             partner.name shouldBe "Test Partner 1"
-            partner.domainName shouldBe "test.domain.tld"
+            partner.domainName shouldBe listOf("test.domain.tld")
 
             partner.contacts.size shouldBe 1
             partner.contacts.first().let { contact ->
@@ -103,7 +105,7 @@ class PartnerRoutingTest {
     fun `POST partner creates partner`() {
         val partnerService = mockk<PartnerService>()
 
-        val partnerSlot = slot<CreatePartner>()
+        val partnerSlot = slot<NewPartner>()
 
         every { partnerService.createPartner(capture(partnerSlot)) } returns testPartner.right()
 
@@ -118,13 +120,13 @@ class PartnerRoutingTest {
 
             response.status shouldBe HttpStatusCode.OK
 
-            partnerSlot.captured shouldBe testCreatePartner
+            partnerSlot.captured shouldBe testCreatePartner.toNewPartner()
 
             val partner = response.body<BasicPartner>()
 
             partner.id shouldBe 1L
             partner.name shouldBe "Test Partner 1"
-            partner.domainName shouldBe "test.domain.tld"
+            partner.domainName shouldBe listOf("test.domain.tld")
         }
     }
 
@@ -155,7 +157,7 @@ class PartnerRoutingTest {
 
             partner.id shouldBe 1L
             partner.name shouldBe "Test Partner 1"
-            partner.domainName shouldBe "test.domain.tld"
+            partner.domainName shouldBe listOf("test.domain.tld")
         }
     }
 
@@ -170,7 +172,8 @@ class PartnerRoutingTest {
     }
 
     companion object {
-        val testCreatePartner = CreatePartner(name = "Test Partner", domainName = "Test Domain Name")
+        val testCreatePartner =
+            CreatePartner(name = "Test Partner", domainName = listOf("test1.domain.tld", "test2.domain.tld"))
 
         val testCreateContact = CreateContact(
             name = "Test Contact",

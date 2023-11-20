@@ -10,7 +10,9 @@ import io.ktor.server.routing.post
 import io.ktor.server.routing.route
 import io.ktor.server.routing.routing
 import no.java.partner.model.web.CreateContact
+import no.java.partner.model.web.CreatePartner
 import no.java.partner.model.web.toBasicPartner
+import no.java.partner.model.web.toNewPartner
 import no.java.partner.model.web.toPartnerWithContacts
 import no.java.partner.service.PartnerService
 
@@ -23,7 +25,7 @@ fun Application.configurePartnerRouting(service: PartnerService) {
 
             post {
                 call.apiRespond {
-                    service.createPartner(call.receive()).map { it.toBasicPartner() }
+                    service.createPartner(call.receive<CreatePartner>().toNewPartner()).map { it.toBasicPartner() }
                 }
             }
 

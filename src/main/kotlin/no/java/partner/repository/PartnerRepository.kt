@@ -2,8 +2,8 @@ package no.java.partner.repository
 
 import kotliquery.Session
 import kotliquery.queryOf
+import no.java.partner.model.NewPartner
 import no.java.partner.model.web.CreateContact
-import no.java.partner.model.web.CreatePartner
 import org.intellij.lang.annotations.Language
 
 class PartnerRepository(private val session: Session) {
@@ -60,7 +60,7 @@ class PartnerRepository(private val session: Session) {
         )
     }.firstOrNull()
 
-    fun createPartner(partner: CreatePartner) = session.run(
+    fun createPartner(partner: NewPartner) = session.run(
         queryOf(
             statement = CREATE_PARTNER,
             paramMap = mapOf("name" to partner.name, "domainName" to partner.domainName),

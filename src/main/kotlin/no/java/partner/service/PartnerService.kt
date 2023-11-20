@@ -10,9 +10,9 @@ import no.java.partner.ApiError
 import no.java.partner.ContactNotFound
 import no.java.partner.MissingID
 import no.java.partner.PartnerNotFound
+import no.java.partner.model.NewPartner
 import no.java.partner.model.Partner
 import no.java.partner.model.web.CreateContact
-import no.java.partner.model.web.CreatePartner
 import no.java.partner.repository.PartnerRepository
 
 private val logger = KotlinLogging.logger {}
@@ -26,7 +26,7 @@ class PartnerService(private val partnerRepository: PartnerRepository) {
         return partnerRepository.byId(partnerId)?.right() ?: PartnerNotFound.left()
     }
 
-    fun createPartner(partner: CreatePartner): Either<ApiError, Partner> {
+    fun createPartner(partner: NewPartner): Either<ApiError, Partner> {
         logger.info { "Creating Partner $partner" }
 
         val createPartner = partnerRepository.createPartner(partner)

@@ -20,8 +20,9 @@ import no.java.partner.ContactNotFound
 import no.java.partner.PartnerNotFound
 import no.java.partner.app
 import no.java.partner.env
+import no.java.partner.model.NewPartner
 import no.java.partner.model.web.CreateContact
-import no.java.partner.model.web.CreatePartner
+import no.java.partner.model.web.toNewPartner
 import no.java.partner.service.PartnerService
 import no.java.partner.testClient
 import org.junit.jupiter.api.Test
@@ -56,7 +57,7 @@ class PartnerRoutingErrorTest {
     fun `POST partner returns correct error if partner not able to be created`() {
         val partnerService = mockk<PartnerService>()
 
-        val partnerSlot = slot<CreatePartner>()
+        val partnerSlot = slot<NewPartner>()
 
         every { partnerService.createPartner(capture(partnerSlot)) } returns PartnerNotFound.left()
 
@@ -71,7 +72,7 @@ class PartnerRoutingErrorTest {
 
             response.status shouldBe HttpStatusCode.NotFound
 
-            partnerSlot.captured shouldBe PartnerRoutingTest.testCreatePartner
+            partnerSlot.captured shouldBe PartnerRoutingTest.testCreatePartner.toNewPartner()
 
             val message = response.body<ApiErrorResponse>()
 

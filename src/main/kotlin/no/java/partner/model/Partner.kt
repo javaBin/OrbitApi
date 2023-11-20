@@ -7,3 +7,8 @@ data class Partner(
 
     val contacts: List<Contact>,
 ) : Identifiable
+
+data class NewPartner(
+    val name: String,
+    val domainName: String?,
+)

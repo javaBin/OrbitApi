@@ -115,17 +115,23 @@ Fetches list of partners
   {
     "id": 1,
     "name": "Partner 1",
-    "domainName": "partner.1.tld"
+    "domainName": [
+      "partner.1.tld"
+    ]
   },
   {
     "id": 2,
     "name": "Partner 2",
-    "domainName": "partner.2.tld"
+    "domainName": [
+      "partner.2.tld"
+    ]
   },
   {
     "id": 3,
     "name": "Partner 3",
-    "domainName": "partner.3.tld"
+    "domainName": [
+      "partner.3.tld"
+    ]
   }
 ]
 ```
@@ -140,7 +146,9 @@ e.g X=1
 {
   "id": 1,
   "name": "Partner 1",
-  "domainName": "partner.1.tld",
+  "domainName": [
+    "partner.1.tld"
+  ],
   "contacts": [
     {
       "id": 4,
@@ -211,7 +219,7 @@ Body:
 ```json
 {
   "name": "Test Partner",
-  "domainName": "test.domain.tld"
+  "domainName": ["test1.domain.tld", "test2.domain.tld"]
 }
 ```
 
@@ -221,7 +229,10 @@ Response:
 {
   "id": 4,
   "name": "Test Partner",
-  "domainName": "test.domain.tld"
+  "domainName": [
+    "test1.domain.tld",
+    "test2.domain.tld"
+  ]
 }
 ```
 
@@ -247,7 +258,10 @@ Response:
 {
   "id": 4,
   "name": "Test Partner",
-  "domainName": "test.domain.tld",
+  "domainName": [
+    "test1.domain.tld",
+    "test2.domain.tld"
+  ]
   "contacts": [
     {
       "id": 6,

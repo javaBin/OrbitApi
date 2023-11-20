@@ -9,8 +9,8 @@ import no.java.partner.PostgresFunSpec
 import no.java.partner.createContacts
 import no.java.partner.createPartners
 import no.java.partner.loadFixtures
+import no.java.partner.model.NewPartner
 import no.java.partner.model.web.CreateContact
-import no.java.partner.model.web.CreatePartner
 import no.java.partner.repository.PartnerRepository
 
 class PartnerServiceTest : PostgresFunSpec({ session ->
@@ -65,7 +65,7 @@ class PartnerServiceTest : PostgresFunSpec({ session ->
     }
 
     test("create partner creates a partner") {
-        val partner = service.createPartner(CreatePartner("Test Create Partner", "test.domain.tld"))
+        val partner = service.createPartner(NewPartner("Test Create Partner", "test.domain.tld"))
 
         partner.isRight() shouldBe true
 
