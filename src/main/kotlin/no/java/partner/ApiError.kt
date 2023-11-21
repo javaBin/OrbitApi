@@ -24,9 +24,11 @@ data object MissingID : ApiError(
     "ID Parameter missing",
 )
 
-// Add more as needed for example - if we have rules for passwords:
+data object MissingPrincipal : ApiError(HttpStatusCode.Unauthorized, "Missing Principal")
 
-data class InvalidPassword(val validations: List<String>) : ApiError(
-    HttpStatusCode.BadRequest,
-    "Invalid password",
+data object NonAdminLogin : ApiError(HttpStatusCode.Unauthorized, "Not an admin")
+
+data class GithubCallFailed(val upstreamStatusCode: HttpStatusCode, val upstreamMessage: String) : ApiError(
+    HttpStatusCode.InternalServerError,
+    "call to github failed",
 )

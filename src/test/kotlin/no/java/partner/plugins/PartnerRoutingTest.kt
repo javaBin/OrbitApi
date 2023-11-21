@@ -5,6 +5,7 @@ import io.kotest.matchers.shouldBe
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.accept
+import io.ktor.client.request.bearerAuth
 import io.ktor.client.request.get
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
@@ -17,6 +18,7 @@ import io.mockk.every
 import io.mockk.mockk
 import io.mockk.slot
 import no.java.partner.app
+import no.java.partner.buildTestToken
 import no.java.partner.env
 import no.java.partner.model.Contact
 import no.java.partner.model.InfoList
@@ -44,6 +46,7 @@ class PartnerRoutingTest {
 
             val response = client.get("/partner") {
                 accept(ContentType.Application.Json)
+                bearerAuth(buildTestToken())
             }
 
             response.status shouldBe HttpStatusCode.OK
@@ -72,6 +75,7 @@ class PartnerRoutingTest {
 
             val response = client.get("/partner/1") {
                 accept(ContentType.Application.Json)
+                bearerAuth(buildTestToken())
             }
 
             response.status shouldBe HttpStatusCode.OK
@@ -115,6 +119,7 @@ class PartnerRoutingTest {
             val response = client.post("/partner") {
                 contentType(ContentType.Application.Json)
                 accept(ContentType.Application.Json)
+                bearerAuth(buildTestToken())
                 setBody(testCreatePartner)
             }
 
@@ -145,6 +150,7 @@ class PartnerRoutingTest {
             val response = client.post("/partner/1/contact") {
                 contentType(ContentType.Application.Json)
                 accept(ContentType.Application.Json)
+                bearerAuth(buildTestToken())
                 setBody(testCreateContact)
             }
 

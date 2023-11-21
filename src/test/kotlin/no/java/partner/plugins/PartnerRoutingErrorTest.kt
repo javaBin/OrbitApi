@@ -5,6 +5,7 @@ import io.kotest.matchers.shouldBe
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.accept
+import io.ktor.client.request.bearerAuth
 import io.ktor.client.request.get
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
@@ -19,6 +20,7 @@ import io.mockk.slot
 import no.java.partner.ContactNotFound
 import no.java.partner.PartnerNotFound
 import no.java.partner.app
+import no.java.partner.buildTestToken
 import no.java.partner.env
 import no.java.partner.model.NewPartner
 import no.java.partner.model.web.CreateContact
@@ -41,15 +43,16 @@ class PartnerRoutingErrorTest {
 
             val response = client.get("/partner/1") {
                 accept(ContentType.Application.Json)
+                bearerAuth(buildTestToken())
             }
 
             response.status shouldBe HttpStatusCode.NotFound
 
             idSlot.captured shouldBe 1L
 
-            val message = response.body<ApiErrorResponse>()
+            val message = response.body<String>()
 
-            message.message shouldBe "Partner not found"
+            message shouldBe "Partner not found"
         }
     }
 
@@ -67,6 +70,7 @@ class PartnerRoutingErrorTest {
             val response = client.post("/partner") {
                 contentType(ContentType.Application.Json)
                 accept(ContentType.Application.Json)
+                bearerAuth(buildTestToken())
                 setBody(PartnerRoutingTest.testCreatePartner)
             }
 
@@ -74,9 +78,9 @@ class PartnerRoutingErrorTest {
 
             partnerSlot.captured shouldBe PartnerRoutingTest.testCreatePartner.toNewPartner()
 
-            val message = response.body<ApiErrorResponse>()
+            val message = response.body<String>()
 
-            message.message shouldBe "Partner not found"
+            message shouldBe "Partner not found"
         }
     }
 
@@ -95,6 +99,7 @@ class PartnerRoutingErrorTest {
             val response = client.post("/partner/1/contact") {
                 contentType(ContentType.Application.Json)
                 accept(ContentType.Application.Json)
+                bearerAuth(buildTestToken())
                 setBody(PartnerRoutingTest.testCreateContact)
             }
 
@@ -103,9 +108,9 @@ class PartnerRoutingErrorTest {
             idSlot.captured shouldBe 1L
             contactSlot.captured shouldBe PartnerRoutingTest.testCreateContact
 
-            val message = response.body<ApiErrorResponse>()
+            val message = response.body<String>()
 
-            message.message shouldBe "Partner not found"
+            message shouldBe "Partner not found"
         }
     }
 
@@ -124,6 +129,7 @@ class PartnerRoutingErrorTest {
             val response = client.post("/partner/1/contact") {
                 contentType(ContentType.Application.Json)
                 accept(ContentType.Application.Json)
+                bearerAuth(buildTestToken())
                 setBody(PartnerRoutingTest.testCreateContact)
             }
 
@@ -132,9 +138,9 @@ class PartnerRoutingErrorTest {
             idSlot.captured shouldBe 1L
             contactSlot.captured shouldBe PartnerRoutingTest.testCreateContact
 
-            val message = response.body<ApiErrorResponse>()
+            val message = response.body<String>()
 
-            message.message shouldBe "Contact not found"
+            message shouldBe "Contact not found"
         }
     }
 

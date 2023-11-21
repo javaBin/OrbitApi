@@ -19,6 +19,6 @@ fun Application.configureSerialization() {
     }
 
     routing {
-        staticResources("/static", "static")
+        staticResources("/", "static")
     }
 }

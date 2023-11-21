@@ -1,0 +1,31 @@
+<html>
+<head>
+</head>
+<body>
+<h1>Orbit</h1>
+
+<script>
+    function getCookie(name) {
+        name = name + '=';
+
+        const decodedCookie = decodeURIComponent(document.cookie);
+
+        const cookies = decodedCookie.split(';');
+
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+
+            if (cookie.indexOf(name) === 0) {
+                return cookie.substring(name.length, cookie.length);
+            }
+        }
+    }
+
+    const cookie = getCookie("user_session");
+
+    if (cookie) {
+        document.write('<code style="display: block;  width: 800px; overflow-wrap: anywhere;">' + cookie + '</code>');
+    }
+</script>
+</body>
+</html>

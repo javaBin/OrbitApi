@@ -25,6 +25,8 @@ repositories {
 }
 
 dependencies {
+    implementation(libs.ktor.server.auth)
+    implementation(libs.ktor.server.auth.jwt)
     implementation(libs.ktor.server.call.id)
     implementation(libs.ktor.server.call.logging)
     implementation(libs.ktor.server.content.negotiation)
@@ -49,6 +51,11 @@ dependencies {
     implementation(libs.logback.classic)
     implementation(libs.kotlin.logging)
 
+    implementation(libs.ktor.client.content.negotiation)
+    implementation(libs.ktor.client.core)
+    implementation(libs.ktor.client.logging)
+    implementation(libs.ktor.client.okhttp)
+
     testImplementation(libs.ktor.server.tests)
     testImplementation(libs.kotest.runner.junit5)
     testImplementation(libs.kotest.assertions.core)
@@ -57,7 +64,7 @@ dependencies {
     testImplementation(libs.testcontainers.core)
     testImplementation(libs.testcontainers.postgresql)
     testImplementation(libs.mockk.jvm)
-    testImplementation(libs.ktor.client.content.negotiation)
+    testImplementation(libs.ktor.client.mock)
 }
 
 tasks {
@@ -83,4 +90,3 @@ tasks.jacocoTestReport {
     }
     dependsOn(tasks.test)
 }
-

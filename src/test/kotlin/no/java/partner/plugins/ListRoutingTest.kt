@@ -5,6 +5,7 @@ import io.kotest.matchers.shouldBe
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.accept
+import io.ktor.client.request.bearerAuth
 import io.ktor.client.request.get
 import io.ktor.client.request.patch
 import io.ktor.client.request.post
@@ -18,6 +19,7 @@ import io.mockk.every
 import io.mockk.mockk
 import io.mockk.slot
 import no.java.partner.app
+import no.java.partner.buildTestToken
 import no.java.partner.env
 import no.java.partner.model.Contact
 import no.java.partner.model.InfoList
@@ -41,6 +43,7 @@ class ListRoutingTest {
 
             val response = client.get("/list") {
                 accept(ContentType.Application.Json)
+                bearerAuth(buildTestToken())
             }
 
             response.status shouldBe HttpStatusCode.OK
@@ -68,6 +71,7 @@ class ListRoutingTest {
 
             val response = client.get("/list/1") {
                 accept(ContentType.Application.Json)
+                bearerAuth(buildTestToken())
             }
 
             response.status shouldBe HttpStatusCode.OK
@@ -113,6 +117,7 @@ class ListRoutingTest {
             val response = client.post("/list") {
                 contentType(ContentType.Application.Json)
                 accept(ContentType.Application.Json)
+                bearerAuth(buildTestToken())
                 setBody(testCreateList)
             }
 
@@ -141,6 +146,7 @@ class ListRoutingTest {
 
             val response = client.post("/list/1/contact/2") {
                 accept(ContentType.Application.Json)
+                bearerAuth(buildTestToken())
             }
 
             response.status shouldBe HttpStatusCode.OK
@@ -176,6 +182,7 @@ class ListRoutingTest {
 
             val response = client.patch("/list/1/contact/2/subscribe") {
                 accept(ContentType.Application.Json)
+                bearerAuth(buildTestToken())
             }
 
             response.status shouldBe HttpStatusCode.OK
@@ -212,6 +219,7 @@ class ListRoutingTest {
 
             val response = client.patch("/list/1/contact/2/unsubscribe") {
                 accept(ContentType.Application.Json)
+                bearerAuth(buildTestToken())
             }
 
             response.status shouldBe HttpStatusCode.OK

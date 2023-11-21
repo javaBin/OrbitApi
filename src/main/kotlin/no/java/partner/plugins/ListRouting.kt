@@ -3,6 +3,7 @@ package no.java.partner.plugins
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.application.Application
 import io.ktor.server.application.call
+import io.ktor.server.auth.authenticate
 import io.ktor.server.request.receive
 import io.ktor.server.response.respond
 import io.ktor.server.routing.get
@@ -16,52 +17,44 @@ import no.java.partner.service.ListService
 
 fun Application.configureListRouting(service: ListService) {
     routing {
-        route("/list") {
-            get {
-                call.respond(HttpStatusCode.OK, service.allLists().map { it.toBasicInfoList() })
-            }
-
-            post {
-                call.apiRespond {
-                    service.createList(call.receive()).map { it.toBasicInfoList() }
-                }
-            }
-
-            route("/{id}") {
+        authenticate("auth-jwt") {
+            route("/list") {
                 get {
-                    call.apiRespond {
-                        service.listById(call.parameters["id"]?.toLong()).map { it.toInfoListWithContacts() }
-                    }
+                    call.respond(HttpStatusCode.OK, service.allLists().map { it.toBasicInfoList() })
                 }
 
-                route("/contact") {
-                    route("/{contact}") {
-                        post {
-                            call.apiRespond {
+                post {
+                    service.createList(call.receive()).map { it.toBasicInfoList() }.respond()
+                }
+
+                route("/{id}") {
+                    get {
+                        service.listById(call.parameters["id"]?.toLong()).map { it.toInfoListWithContacts() }.respond()
+                    }
+
+                    route("/contact") {
+                        route("/{contact}") {
+                            post {
                                 service.createSubscription(
                                     listId = call.parameters["id"]?.toLong(),
                                     contactId = call.parameters["contact"]?.toLong(),
-                                ).map { it.toInfoListWithContacts() }
+                                ).map { it.toInfoListWithContacts() }.respond()
                             }
-                        }
 
-                        patch("/subscribe") {
-                            call.apiRespond {
+                            patch("/subscribe") {
                                 service.updateSubscription(
                                     listId = call.parameters["id"]?.toLong(),
                                     contactId = call.parameters["contact"]?.toLong(),
                                     subscription = true,
-                                ).map { it.toInfoListWithContacts() }
+                                ).map { it.toInfoListWithContacts() }.respond()
                             }
-                        }
 
-                        patch("/unsubscribe") {
-                            call.apiRespond {
+                            patch("/unsubscribe") {
                                 service.updateSubscription(
                                     listId = call.parameters["id"]?.toLong(),
                                     contactId = call.parameters["contact"]?.toLong(),
                                     subscription = false,
-                                ).map { it.toInfoListWithContacts() }
+                                ).map { it.toInfoListWithContacts() }.respond()
                             }
                         }
                     }

@@ -3,38 +3,34 @@ package no.java.partner.plugins
 import arrow.core.Either
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.application.ApplicationCall
+import io.ktor.server.application.call
 import io.ktor.server.response.respond
+import io.ktor.server.response.respondRedirect
+import io.ktor.util.pipeline.PipelineContext
 import no.java.partner.ApiError
-import no.java.partner.InvalidPassword
+import no.java.partner.GithubCallFailed
 
-data class Response<T>(
-    val code: HttpStatusCode,
-    val message: T,
-)
+context(PipelineContext<Unit, ApplicationCall>)
+suspend inline fun <reified A : Any> Either<ApiError, A>.respond(status: HttpStatusCode = HttpStatusCode.OK) =
+    when (this) {
+        is Either.Left -> respond(value)
+        is Either.Right -> call.respond(status, value)
+    }
 
-suspend fun ApplicationCall.apiRespond(block: suspend () -> Either<ApiError, Any>) {
-    val response = block().respond()
-
-    this.respond(response.code, response.message)
+context(PipelineContext<Unit, ApplicationCall>)
+suspend inline fun <reified A : Any> Either<ApiError, A>.respondRedirect(url: String) = when (this) {
+    is Either.Left -> respond(value)
+    is Either.Right -> call.respondRedirect(url)
 }
 
-fun <T : Any> Either<ApiError, T>.respond(): Response<Any> = this.fold({
-    when (it) {
-        // E.g.
-        is InvalidPassword -> it.buildResponse(InvalidPasswordResponse(validations = it.validations))
-        else -> it.buildResponse(ApiErrorResponse(message = it.message))
-    }
-}, {
-    Response(HttpStatusCode.OK, it)
-})
+suspend fun PipelineContext<Unit, ApplicationCall>.respond(error: ApiError) = when (error) {
+    is GithubCallFailed -> call.respond(
+        error.statusCode,
+        mapOf(
+            "Upstream Status Code" to error.upstreamStatusCode,
+            "Upstream Body" to error.upstreamMessage,
+        ),
+    )
 
-data class InvalidPasswordResponse(
-    val validations: List<String>,
-)
-data class ApiErrorResponse(
-    val message: String,
-)
-
-private fun ApiError.buildResponse(body: Any): Response<Any> {
-    return Response(this.statusCode, body)
+    else -> call.respond(error.statusCode, error.message)
 }
