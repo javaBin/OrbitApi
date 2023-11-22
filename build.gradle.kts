@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.kotlin)
     alias(libs.plugins.ktor)
@@ -41,6 +43,7 @@ dependencies {
 
     implementation(libs.arrow.core)
 
+    implementation(libs.kompendium.core)
     implementation(libs.kotliquery)
     implementation(libs.flyway)
     implementation(libs.flyway.postgres)
@@ -89,4 +92,14 @@ tasks.jacocoTestReport {
         xml.required.set(true)
     }
     dependsOn(tasks.test)
+}
+
+tasks.withType<ProcessResources>() {
+    doLast {
+        val propertiesFile = rootProject.layout.buildDirectory.dir("resources/main/version.properties").get().asFile
+        propertiesFile.parentFile.mkdirs()
+        val properties = Properties()
+        properties.setProperty("version", rootProject.version.toString())
+        propertiesFile.writer().use { properties.store(it, null) }
+    }
 }

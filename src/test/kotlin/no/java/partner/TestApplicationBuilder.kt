@@ -10,6 +10,7 @@ import io.ktor.server.testing.ApplicationTestBuilder
 import io.mockk.mockk
 import no.java.partner.plugins.UserInfo
 import no.java.partner.plugins.buildToken
+import no.java.partner.plugins.configureOpenApi
 import no.java.partner.plugins.configureRouting
 import no.java.partner.plugins.configureSecurity
 import no.java.partner.plugins.configureSerialization
@@ -52,6 +53,7 @@ fun ApplicationTestBuilder.app(config: Application.() -> Unit) {
         configureSerialization()
         configureRouting()
         configureSecurity(mockk())
+        configureOpenApi("Test", 8080)
 
         config()
     }

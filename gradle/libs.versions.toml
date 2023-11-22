@@ -4,6 +4,7 @@ detekt_version = "1.23.3"
 flyway_version = "10.0.1"
 hikaricp_version = "5.0.1"
 jackson_datatype_jsr310_version = "2.15.3"
+kompendium_version = "3.14.4"
 kotest_testcontainers_version = "2.0.2"
 kotest_version = "5.8.0"
 kotlin_logging_version = "3.0.5"
@@ -26,6 +27,8 @@ flyway-postgres = { group = "org.flywaydb", name = "flyway-database-postgresql",
 hikaricp = { group = "com.zaxxer", name = "HikariCP", version.ref = "hikaricp_version" }
 
 jackson-datatype-jsr310 = { group = "com.fasterxml.jackson.datatype", name = "jackson-datatype-jsr310", version.ref = "jackson_datatype_jsr310_version" }
+
+kompendium-core = { group = "io.bkbn", name = "kompendium-core", version.ref = "kompendium_version" }
 
 kotest-assertions-core = { group = "io.kotest", name = "kotest-assertions-core", version.ref = "kotest_version" }
 kotest-extensions-testcontainers = { group = "io.kotest.extensions", name = "kotest-extensions-testcontainers", version.ref = "kotest_testcontainers_version" }
