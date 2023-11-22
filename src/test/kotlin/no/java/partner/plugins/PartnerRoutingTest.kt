@@ -57,7 +57,7 @@ class PartnerRoutingTest {
             partners.first().let {
                 it.id shouldBe 1L
                 it.name shouldBe "Test Partner 1"
-                it.domainName shouldBe listOf("test.domain.tld")
+                it.domainName shouldBe listOf("test1.domain.tld", "test2.domain.tld")
             }
         }
     }
@@ -86,7 +86,7 @@ class PartnerRoutingTest {
 
             partner.id shouldBe 1L
             partner.name shouldBe "Test Partner 1"
-            partner.domainName shouldBe listOf("test.domain.tld")
+            partner.domainName shouldBe listOf("test1.domain.tld", "test2.domain.tld")
 
             partner.contacts.size shouldBe 1
             partner.contacts.first().let { contact ->
@@ -131,7 +131,37 @@ class PartnerRoutingTest {
 
             partner.id shouldBe 1L
             partner.name shouldBe "Test Partner 1"
-            partner.domainName shouldBe listOf("test.domain.tld")
+            partner.domainName shouldBe listOf("test1.domain.tld", "test2.domain.tld")
+        }
+    }
+
+    @Test
+    fun `POST partner without domain creates partner`() {
+        val partnerService = mockk<PartnerService>()
+
+        val partnerSlot = slot<NewPartner>()
+
+        every { partnerService.createPartner(capture(partnerSlot)) } returns testPartnerNoDomain.right()
+
+        testApplication {
+            val client = setup(partnerService)
+
+            val response = client.post("/partner") {
+                contentType(ContentType.Application.Json)
+                accept(ContentType.Application.Json)
+                bearerAuth(buildTestToken())
+                setBody(testCreatePartnerNoDomain)
+            }
+
+            response.status shouldBe HttpStatusCode.OK
+
+            partnerSlot.captured shouldBe testCreatePartnerNoDomain.toNewPartner()
+
+            val partner = response.body<BasicPartner>()
+
+            partner.id shouldBe 1L
+            partner.name shouldBe "Test Partner 1"
+            partner.domainName shouldBe emptyList()
         }
     }
 
@@ -163,7 +193,7 @@ class PartnerRoutingTest {
 
             partner.id shouldBe 1L
             partner.name shouldBe "Test Partner 1"
-            partner.domainName shouldBe listOf("test.domain.tld")
+            partner.domainName shouldBe listOf("test1.domain.tld", "test2.domain.tld")
         }
     }
 
@@ -181,6 +211,9 @@ class PartnerRoutingTest {
         val testCreatePartner =
             CreatePartner(name = "Test Partner", domainName = listOf("test1.domain.tld", "test2.domain.tld"))
 
+        val testCreatePartnerNoDomain =
+            CreatePartner(name = "Test Partner", domainName = emptyList())
+
         val testCreateContact = CreateContact(
             name = "Test Contact",
             email = "test@domain.tld",
@@ -191,7 +224,30 @@ class PartnerRoutingTest {
         val testPartner = Partner(
             id = 1,
             name = "Test Partner 1",
-            domainName = "test.domain.tld",
+            domainName = "test1.domain.tld%test2.domain.tld",
+            contacts = listOf(
+                Contact(
+                    id = 1L,
+                    name = "Test Contact 1",
+                    email = "test@domain.tld",
+                    telephone = "Test Telephone",
+                    source = "Test Source",
+                    lists = listOf(
+                        InfoList(
+                            id = 1L,
+                            name = "Test List 1",
+                            contacts = emptyList(),
+                            unsubscribed = emptyList(),
+                        ),
+                    ),
+                ),
+            ),
+        )
+
+        val testPartnerNoDomain = Partner(
+            id = 1,
+            name = "Test Partner 1",
+            domainName = null,
             contacts = listOf(
                 Contact(
                     id = 1L,
