@@ -79,6 +79,14 @@ tasks {
     }
 }
 
+tasks.shadowJar {
+    archiveFileName.set("orbit.jar")
+}
+
+tasks.jar {
+    enabled = false
+}
+
 tasks.withType<Test>().configureEach {
     useJUnitPlatform()
 }
