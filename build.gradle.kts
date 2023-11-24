@@ -18,8 +18,8 @@ application {
     applicationDefaultJvmArgs = listOf("-Dio.ktor.development=$isDevelopment")
 }
 
-java {
-    sourceCompatibility = JavaVersion.VERSION_17
+kotlin {
+    jvmToolchain(17)
 }
 
 repositories {
@@ -74,7 +74,6 @@ tasks {
     withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
         kotlinOptions {
             freeCompilerArgs = listOf("-Xcontext-receivers")
-            jvmTarget = "17"
         }
     }
 }
@@ -102,7 +101,7 @@ tasks.jacocoTestReport {
     dependsOn(tasks.test)
 }
 
-tasks.withType<ProcessResources>() {
+tasks.withType<ProcessResources> {
     doLast {
         val propertiesFile = rootProject.layout.buildDirectory.dir("resources/main/version.properties").get().asFile
         propertiesFile.parentFile.mkdirs()
