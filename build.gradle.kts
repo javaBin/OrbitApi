@@ -3,8 +3,6 @@ import java.util.Properties
 plugins {
     alias(libs.plugins.kotlin)
     alias(libs.plugins.ktor)
-    alias(libs.plugins.kotlinter)
-    alias(libs.plugins.detekt)
     jacoco
 }
 
