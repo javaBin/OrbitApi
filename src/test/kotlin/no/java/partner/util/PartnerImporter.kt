@@ -1,5 +1,6 @@
 package no.java.partner.util
 
+import org.jsonbuddy.JsonArray
 import org.jsonbuddy.JsonObject
 import org.jsonbuddy.parse.JsonParser
 import java.io.File
@@ -76,7 +77,7 @@ private class MatchCompanyUtil(filname:String?) {
 }
 
 object PartnerImporter {
-    private val SERVER_ADDRESS = "localhost:8080"
+    private val SERVER_ADDRESS = "http://localhost:8080"
     private fun importRow(row:String):FlatContactImport {
         val parts:List<String> = row.split(";")
         return FlatContactImport(
@@ -129,6 +130,7 @@ object PartnerImporter {
         }
         companies.sortBy { it.name }
         companies.forEach { println(it.reportValue) }
+        companies.forEach { postCompanyToApp(it) }
     }
 
     fun readAllEmails(filename:String):List<String> {
@@ -149,9 +151,30 @@ object PartnerImporter {
         return emails
     }
 
-    fun addPartner(name:String, domanins:List<String>):String {
-        val url = URL(SERVER_ADDRESS + "/partner")
+    private fun postCompanyToApp(companyImport: CompanyImport) {
+        val companyId = addPartner(companyImport.name, companyImport.domain.toList())
+        println("Added company $companyId")
+        for (contact in companyImport.contacs) {
+            addContact(companyId,contact.name?:"Unknown",contact.email,contact.source)
+        }
+    }
+
+    private fun setupConnect(path:String):HttpURLConnection {
+        val url = URL(SERVER_ADDRESS + path)
         val urlConnection = url.openConnection() as HttpURLConnection
+        urlConnection.addRequestProperty("Content-Type","application/json;charset=utf-8")
+        return urlConnection
+    }
+
+    fun addPartner(name:String, domanins:List<String>):Long {
+        val payload = JsonObject().put("name",name).put("domainName",JsonArray.fromStringList(domanins))
+        val urlConnection = setupConnect("/partner")
+        postToConnection(urlConnection, payload)
+        val restultObj:JsonObject = urlConnection.inputStream.use { JsonObject.read(it) }
+        return restultObj.requiredLong("id")
+    }
+
+    private fun postToConnection(urlConnection: HttpURLConnection, payload: JsonObject) {
         urlConnection.requestMethod = "POST"
         urlConnection.setDoOutput(true)
         PrintWriter(OutputStreamWriter(urlConnection.getOutputStream(), "utf-8")).use { printWriter ->
@@ -159,8 +182,18 @@ object PartnerImporter {
                 printWriter
             )
         }
+    }
+
+    fun addContact(partnerid:Long,name:String,email:String,source:String) {
+        val payload = JsonObject()
+            .put("name",name)
+            .put("email",email)
+            .put("source",source)
+        val urlConnection = setupConnect("/partner/$partnerid/contact")
+        postToConnection(urlConnection,payload)
         val restultObj:JsonObject = urlConnection.inputStream.use { JsonObject.read(it) }
-        return restultObj.requiredString("")
+        println(restultObj.toJson())
+
     }
 
     @JvmStatic
