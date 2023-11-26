@@ -19,6 +19,7 @@ val appConfig = HoconApplicationConfig(
     ConfigFactory.parseMap(
         mapOf(
             "jwt" to mapOf(
+                "security_on" to "true",
                 "secret" to "secret",
                 "issuer" to "issuer",
                 "audience" to "audience",

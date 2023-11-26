@@ -51,10 +51,8 @@ fun Application.module() {
         version = VersionConfig.version,
         port = environment.config.property("ktor.deployment.port").getString().toInt(),
     )
-    //if (environment.config.property("jwt.security_on").getString() != "false") {
-        configureSecurity(
-            httpClient,
-        )
-    //}
+    configureSecurity(
+        httpClient,
+    )
     configureServices(dataSource)
 }

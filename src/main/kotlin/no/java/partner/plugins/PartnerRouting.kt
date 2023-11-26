@@ -20,7 +20,7 @@ import no.java.partner.service.PartnerService
 
 
 fun Application.configurePartnerRouting(service: PartnerService) {
-    val optionalSec = (environment.config.property("jwt.security_on").getString() != "false")
+    val optionalSec = (environment.config.property("jwt.security_on").getString() != "true")
     routing {
         authenticate("auth-jwt", optional = optionalSec) {
             route("/partner") {
