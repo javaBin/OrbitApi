@@ -33,6 +33,7 @@ private data class FlatContactImport(
     val companyRead:String = company?: companyFromEmail(email)
 }
 
+
 private data class CompanyImport(
     val id:String = UUID.randomUUID().toString(),
     val name:String,
@@ -40,6 +41,14 @@ private data class CompanyImport(
     val contacs:List<FlatContactImport>
 ) {
     val reportValue:String = "'$name' ($domain) : ${contacs.size}"
+
+    fun removeDuplicateContacts():CompanyImport {
+        val groupedEmails = contacs.groupBy { it.email.lowercase() }
+        val newContacts:List<FlatContactImport> = groupedEmails.values.map { all ->
+            all.firstOrNull { it.name != null }?:all.first()
+        }
+        return this.copy(contacs = newContacts)
+    }
 }
 
 private fun domainFromEmail(email: String):String {
@@ -129,8 +138,9 @@ object PartnerImporter {
             }
         }
         companies.sortBy { it.name }
-        companies.forEach { println(it.reportValue) }
-        companies.forEach { postCompanyToApp(it) }
+        val filteredComp = companies.map { it.removeDuplicateContacts() }
+        filteredComp.forEach { println(it.reportValue) }
+        filteredComp.forEach { postCompanyToApp(it) }
     }
 
     fun readAllEmails(filename:String):List<String> {
