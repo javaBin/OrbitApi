@@ -20,8 +20,9 @@ import no.java.partner.plugins.openapi.ListRoutingDoc
 import no.java.partner.service.ListService
 
 fun Application.configureListRouting(service: ListService) {
+    val optionalSec = (environment.config.property("jwt.security_on").getString() != "false")
     routing {
-        authenticate("auth-jwt") {
+        authenticate("auth-jwt", optional = optionalSec) {
             route("/list") {
                 install(NotarizedRoute()) {
                     get = ListRoutingDoc.listList

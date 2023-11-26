@@ -8,10 +8,7 @@ import io.ktor.server.application.install
 import io.ktor.server.auth.authenticate
 import io.ktor.server.request.receive
 import io.ktor.server.response.respond
-import io.ktor.server.routing.get
-import io.ktor.server.routing.post
-import io.ktor.server.routing.route
-import io.ktor.server.routing.routing
+import io.ktor.server.routing.*
 import no.java.partner.model.web.CreateContact
 import no.java.partner.model.web.CreatePartner
 import no.java.partner.model.web.toBasicPartner
@@ -20,9 +17,12 @@ import no.java.partner.model.web.toPartnerWithContacts
 import no.java.partner.plugins.openapi.PartnerRoutingDoc
 import no.java.partner.service.PartnerService
 
+
+
 fun Application.configurePartnerRouting(service: PartnerService) {
+    val optionalSec = (environment.config.property("jwt.security_on").getString() != "false")
     routing {
-        authenticate("auth-jwt") {
+        authenticate("auth-jwt", optional = optionalSec) {
             route("/partner") {
                 install(NotarizedRoute()) {
                     get = PartnerRoutingDoc.partnerList

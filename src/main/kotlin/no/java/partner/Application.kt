@@ -15,7 +15,10 @@ import no.java.partner.plugins.configureServices
 import no.java.partner.plugins.dataSource
 import java.util.Properties
 
-fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
+fun main(args: Array<String>){
+
+    io.ktor.server.netty.EngineMain.main(args)
+}
 
 object VersionConfig {
     private val versionProps by lazy {
@@ -48,8 +51,10 @@ fun Application.module() {
         version = VersionConfig.version,
         port = environment.config.property("ktor.deployment.port").getString().toInt(),
     )
-    configureSecurity(
-        httpClient,
-    )
+    //if (environment.config.property("jwt.security_on").getString() != "false") {
+        configureSecurity(
+            httpClient,
+        )
+    //}
     configureServices(dataSource)
 }
