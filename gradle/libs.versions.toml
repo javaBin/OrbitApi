@@ -1,9 +1,10 @@
 [versions]
 arrow_version = "1.2.1"
-detekt_version = "1.23.3"
-flyway_version = "10.0.1"
+detekt_version = "1.23.4"
+flyway_version = "10.1.0"
 hikaricp_version = "5.0.1"
-jackson_datatype_jsr310_version = "2.15.3"
+jackson_datatype_jsr310_version = "2.16.0"
+jsonbuddy_version = "0.18.1"
 kompendium_version = "3.14.4"
 kotest_testcontainers_version = "2.0.2"
 kotest_version = "5.8.0"
@@ -12,11 +13,12 @@ kotlin_version = "1.9.21"
 kotlinter_version = "3.14.0"
 kotlinx_version = "1.7.3"
 kotliquery_version = "1.9.0"
-ktor_version = "2.3.6"
-logback_version = "1.4.11"
+ktor_version = "2.3.7"
+logback_version = "1.4.14"
 mockk_version = "1.13.8"
-postgres_version = "42.6.0"
-testcontainers_version = "1.19.1"
+postgres_version = "42.7.1"
+sendgrid_version = "4.10.0"
+testcontainers_version = "1.19.3"
 
 [libraries]
 arrow-core = { group = "io.arrow-kt", name = "arrow-core", version.ref = "arrow_version" }
@@ -27,6 +29,8 @@ flyway-postgres = { group = "org.flywaydb", name = "flyway-database-postgresql",
 hikaricp = { group = "com.zaxxer", name = "HikariCP", version.ref = "hikaricp_version" }
 
 jackson-datatype-jsr310 = { group = "com.fasterxml.jackson.datatype", name = "jackson-datatype-jsr310", version.ref = "jackson_datatype_jsr310_version" }
+
+jsonbuddy = { group = "org.jsonbuddy", name = "jsonbuddy", version.ref = "jsonbuddy.version" }
 
 kompendium-core = { group = "io.bkbn", name = "kompendium-core", version.ref = "kompendium_version" }
 
@@ -65,6 +69,9 @@ logback-classic = { group = "ch.qos.logback", name = "logback-classic", version.
 mockk-jvm = { group = "io.mockk", name = "mockk-jvm", version.ref = "mockk_version" }
 
 postgres = { group = "org.postgresql", name = "postgresql", version.ref = "postgres_version" }
+
+sendgrid = { group = "com.sendgrid", name = "sendgrid-java", version.ref = "sendgrid_version" }
+
 
 testcontainers-core = { group = "org.testcontainers", name = "testcontainers", version.ref = "testcontainers_version" }
 testcontainers-postgresql = { group = "org.testcontainers", name = "postgresql", version.ref = "testcontainers_version" }

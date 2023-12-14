@@ -56,7 +56,8 @@ dependencies {
     implementation(libs.ktor.client.core)
     implementation(libs.ktor.client.logging)
     implementation(libs.ktor.client.okhttp)
-    implementation("com.sendgrid:sendgrid-java:4.10.0")
+
+    implementation(libs.sendgrid)
 
     testImplementation(libs.ktor.server.tests)
     testImplementation(libs.kotest.runner.junit5)
@@ -68,8 +69,7 @@ dependencies {
     testImplementation(libs.mockk.jvm)
     testImplementation(libs.ktor.client.mock)
     testImplementation(libs.ktor.client.content.negotiation)
-    testImplementation("org.jsonbuddy:jsonbuddy:0.18.1")
-
+    testImplementation(libs.jsonbuddy)
 }
 
 tasks {
