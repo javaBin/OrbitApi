@@ -1,7 +1,7 @@
 [versions]
 arrow_version = "1.2.1"
 detekt_version = "1.23.4"
-flyway_version = "10.7.1"
+flyway_version = "10.8.1"
 hikaricp_version = "5.1.0"
 jackson_datatype_jsr310_version = "2.16.1"
 jsonbuddy_version = "0.18.1"
@@ -11,14 +11,14 @@ kotest_version = "5.8.0"
 kotlin_logging_version = "3.0.5"
 kotlin_version = "1.9.22"
 kotlinter_version = "3.14.0"
-kotlinx_version = "1.7.3"
+kotlinx_version = "1.8.0"
 kotliquery_version = "1.9.0"
 ktor_version = "2.3.8"
-logback_version = "1.4.14"
+logback_version = "1.5.0"
 mockk_version = "1.13.9"
-postgres_version = "42.7.1"
-sendgrid_version = "4.10.1"
-testcontainers_version = "1.19.4"
+postgres_version = "42.7.2"
+sendgrid_version = "4.10.2"
+testcontainers_version = "1.19.5"
 
 [libraries]
 arrow-core = { group = "io.arrow-kt", name = "arrow-core", version.ref = "arrow_version" }
