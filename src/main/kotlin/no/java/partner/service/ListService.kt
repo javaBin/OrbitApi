@@ -5,7 +5,7 @@ import arrow.core.flatten
 import arrow.core.left
 import arrow.core.raise.either
 import arrow.core.right
-import mu.KotlinLogging
+import io.github.oshai.kotlinlogging.KotlinLogging
 import no.java.partner.ApiError
 import no.java.partner.ListNotFound
 import no.java.partner.MissingID

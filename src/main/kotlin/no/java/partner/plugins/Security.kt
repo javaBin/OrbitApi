@@ -33,7 +33,7 @@ import io.ktor.server.response.respond
 import io.ktor.server.routing.get
 import io.ktor.server.routing.routing
 import io.ktor.util.date.GMTDate
-import mu.KotlinLogging
+import io.github.oshai.kotlinlogging.KotlinLogging
 import no.java.partner.ApiError
 import no.java.partner.GithubCallFailed
 import no.java.partner.MissingPrincipal

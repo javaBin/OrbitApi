@@ -2,12 +2,14 @@ package no.java.partner
 
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
+import io.github.oshai.kotlinlogging.DelegatingKLogger
+import io.github.oshai.kotlinlogging.KotlinLogging
 import io.kotest.core.spec.style.FunSpec
 import kotliquery.Session
 import kotliquery.queryOf
 import kotliquery.sessionOf
-import mu.KotlinLogging
 import org.flywaydb.core.Flyway
+import org.slf4j.Logger
 import org.testcontainers.containers.PostgreSQLContainer
 import org.testcontainers.containers.output.Slf4jLogConsumer
 
@@ -56,7 +58,7 @@ private fun db() = PostgreSQLContainer<Nothing>("postgres:15-alpine").apply {
     withReuse(true)
     start()
     println("🎩 Postgres started on port $firstMappedPort")
-}.also { it.followOutput(Slf4jLogConsumer(logger.underlyingLogger)) }
+}.also { it.followOutput(Slf4jLogConsumer((logger as DelegatingKLogger<Logger>).underlyingLogger)) }
 
 private fun HikariDataSource.flyway() {
     Flyway.configure()
